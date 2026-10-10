@@ -1,0 +1,33 @@
+services:
+  inventory:
+    container_name: inventory
+    build: .
+    env_file:
+      - .env
+    init: true
+    restart: unless-stopped
+    ports:
+      - "51112:51112"
+    # networks:
+    #   - deploys_net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://inventory:51111/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+    # Extra security:
+    user: "10001:10001"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 100
+    mem_limit: 256m
+    cpus: 0.5
+
+# networks:
+#   deploys_net:
+#     external: true
