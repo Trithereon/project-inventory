@@ -7,6 +7,7 @@
     "dev": "node --env-file=.env --watch index.js",
     "dev-docker": "docker compose up -f docker-compose.dev.yaml --build -d",
     "docker": "docker compose up -f docker-compose.prod.yaml --build -d",
+    "pop": "node --env-file=.env ./db/populatedb.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -20,6 +21,7 @@
     "pg": "^8.23.1"
   },
   "devDependencies": {
-    "prettier-plugin-ejs": "^1.0.3"
+    "prettier-plugin-ejs": "^1.0.3",
+    "prettier-plugin-sql": "^0.20.0"
   }
 }

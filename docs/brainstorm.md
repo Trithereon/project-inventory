@@ -20,3 +20,12 @@ Borrowing assets and text content.
 ## Theme
 
 - casino zeus slot machine: clouds, blue sky, gold colors, divine look
+- age of mythology
+- valheim
+- hercules
+- clash of titans
+- marvel thor, loki
+
+## App architecture
+
+- Probably will need a controller and router for domains, gods, and pantheons.
