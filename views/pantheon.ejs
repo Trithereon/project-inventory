@@ -4,16 +4,80 @@
   <body>
     <%- include("./partials/header", {title:title}) %>
 
-    <% gods.forEach((god)=>{ %>
+    <script>
+      function toggleForm() {
+        const form = document.querySelector("form");
+        return form.classList.toggle("visible");
+      }
+    </script>
+
+    <button onclick="toggleForm()">Create new god</button>
+    <form action="/god/new" method="POST">
+      <div>
+        <label for="name">Name: </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="e.g. Apollo"
+          required
+        />
+      </div>
+      <div>
+        <label for="pantheon_id">Pantheon: </label>
+        <select id="pantheon_id" name="pantheon_id" required>
+          <option value="">-</option>
+          <% pantheons.forEach((pantheon) => { %>
+          <option value="<%= pantheon.id %>"><%= pantheon.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div>
+        <label for="gender">Gender: </label>
+        <select id="gender" name="gender">
+          <option value="">-</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Both">Both</option>
+        </select>
+      </div>
+      <div>
+        <label for="status">Status: </label>
+        <select id="status" name="status">
+          <option value="">-</option>
+          <option value="Major">Major</option>
+          <option value="Minor">Minor</option>
+        </select>
+      </div>
+      <div>
+        <label for="description">Description: </label>
+        <textarea
+          id="description"
+          name="description"
+          placeholder="A brief summary"
+        ></textarea>
+      </div>
+      <div>
+        <label for="img_url">Image URL: </label>
+        <input
+          name="img_url"
+          id="img_url"
+          type="url"
+          placeholder="Enter a valid URL"
+        />
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+
+    <% gods.forEach((god) => { %>
     <div class="god-block">
       <h3>
-        <a href="/"><%= god.name %></a>
+        <a href="/god/<%= god.name.toLowerCase() %>/view"><%= god.name %></a>
       </h3>
       <small>
         <%= god.gender %>,
-        <%= god.status %></small
-      >
-      <div class="description"><%= god.description %></div>
+        <%= god.status %>
+      </small>
       <img src="<%= god.img_url %>" alt="Image of <%= god.name %>" />
     </div>
     <% }) %>

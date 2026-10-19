@@ -4,6 +4,39 @@
   <body>
     <%- include("./partials/header", {title:title}) %>
 
+    <script>
+      function toggleForm() {
+        const form = document.querySelector("form");
+        return form.classList.toggle("visible");
+      }
+    </script>
+
+    <button onclick="toggleForm()">Create new pantheon</button>
+    <form action="/pantheon/new" method="POST">
+      <div>
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" placeholder="e.g. Roman" />
+      </div>
+      <div>
+        <label for="origin">Region of origin: </label>
+        <input
+          type="text"
+          id="origin"
+          name="origin"
+          placeholder="e.g. Rome, 2000 BC"
+        />
+      </div>
+      <div>
+        <label for="description">Description: </label>
+        <textarea
+          id="description"
+          name="description"
+          placeholder="A brief summary"
+        ></textarea>
+      </div>
+      <button type="submit">Create new pantheon</button>
+    </form>
+
     <% pantheons.forEach((pantheon)=>{ %>
     <div>
       <h3 class="name">

@@ -20,6 +20,14 @@ body {
   padding-bottom: 40px;
 }
 
+form {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
 img {
   max-width: 1024px;
 }

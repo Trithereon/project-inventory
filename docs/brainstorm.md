@@ -8,6 +8,18 @@
   - Otherwise, I can have parents, siblings, spouses, cousins as separate tables.
   - Or parents and peers, where peers includes siblings, cousins and spouses, since parenthood is top-down, but everything else is lateral.
 
+### God page
+
+- Need the following columns from the db:
+  - god (pantheon_id, name, gender, description, status, img_url)
+  - pantheon (name)
+  - domains (name, description)
+  - symbols (god_id, symbol)
+  - god_domains (god_id, domain_id)
+  - god_counterparts (god_a_id, god_b_id)
+  - god_parents (parent_id, child_id)
+  - god_peers (god_a_id, god_b_id, relation)
+
 ## Content
 
 Borrowing assets and text content.
@@ -28,4 +40,4 @@ Borrowing assets and text content.
 
 ## App architecture
 
-- Probably will need a controller and router for domains, gods, and pantheons.
+- Probably will need a controller and router for domains, gods, and pantheons. Or maybe the app is simple enough for me to use juste one router and controller.

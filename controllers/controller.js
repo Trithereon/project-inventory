@@ -13,7 +13,7 @@ exports.pantheonGet = async (req, res) => {
   const pantheons = (await db.getPantheons()).map((pantheon) =>
     pantheon.name.toLowerCase(),
   );
-  // Prevent arbitrary pantheon name user input. There might be a better way.
+  // Prevent arbitrary pantheon name user input. TODO: Proper validation with matchedData would be better.
   if (!pantheons.includes(pantheon)) {
     console.log("404 triggered by:", req.method, req.originalUrl);
     return res.status(404).render("404");
@@ -21,5 +21,35 @@ exports.pantheonGet = async (req, res) => {
   return res.render("pantheon", {
     title: pantheon.charAt(0).toUpperCase() + pantheon.slice(1),
     gods: await db.getGods(pantheon),
+    pantheons: await db.getPantheons(),
   });
+};
+
+exports.godGet = async (req, res) => {
+  // insert validation here
+  const name = req.params.id;
+  const [god] = await db.getGod(name);
+  return res.render("god", {
+    title: name.charAt(0).toUpperCase() + name.slice(1),
+    god: god,
+  });
+};
+
+exports.pantheonPost = async (req, res) => {
+  // insert validation here
+  // must prevent name reuse, prevent null, sanitize
+  const { name, origin, description } = req.body;
+  if (!name || !origin || !description)
+    return res.status(400).send("Error 400 Bad Request - invalid input");
+  await db.createPantheon(req.body);
+  return res.redirect("/");
+};
+
+exports.godPost = async (req, res) => {
+  // insert validation here
+  const { name } = req.body;
+  if (!name)
+    return res.status(400).send("Error 400 Bad Request - invalid input");
+  await db.createGod(req.body);
+  return res.redirect("/"); // TODO: fix redir to point to current pantheon
 };

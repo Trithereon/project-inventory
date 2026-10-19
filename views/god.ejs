@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("./partials/head", {title:title}) %>
+  <body>
+    <%- include("./partials/header", {title:title}) %>
+
+    <div class="god-block">
+      <small>
+        <%= god.gender %>,
+        <%= god.status %>
+      </small>
+      <div class="description"><%= god.description %></div>
+      <img src="<%= god.img_url %>" alt="Image of <%= god.name %>" />
+    </div>
+
+    <%- include("./partials/footer") %>
+  </body>
+</html>

@@ -15,4 +15,34 @@ async function getGods(pantheon) {
   return rows;
 }
 
-module.exports = { getPantheons, getGods };
+async function getGod(name) {
+  const SQL = `SELECT * FROM gods
+                WHERE name ILIKE '${name}'`;
+  const { rows } = await pool.query(SQL);
+  return rows;
+}
+
+async function createPantheon(pantheon) {
+  const SQL = `INSERT INTO pantheons(name, origin, description)
+                VALUES($1, $2, $3)`;
+  return await pool.query(SQL, [
+    pantheon.name,
+    pantheon.origin,
+    pantheon.description,
+  ]);
+}
+
+async function createGod(god) {
+  const SQL = `INSERT INTO gods(pantheon_id, name,gender,description, status, img_url)
+                VALUES($1, $2, $3, $4, $5, $6)`;
+  return await pool.query(SQL, [
+    god.pantheon_id,
+    god.name,
+    god.gender || null,
+    god.description || null,
+    god.status || null,
+    god.img_url || null,
+  ]);
+}
+
+module.exports = { getPantheons, getGods, createPantheon, getGod, createGod };
