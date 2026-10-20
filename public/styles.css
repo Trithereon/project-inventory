@@ -20,6 +20,11 @@ body {
   padding-bottom: 40px;
 }
 
+.create-btn,
+.delete-btn {
+  width: fit-content;
+}
+
 form {
   display: none;
 }

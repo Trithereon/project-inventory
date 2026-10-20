@@ -45,4 +45,16 @@ async function createGod(god) {
   ]);
 }
 
-module.exports = { getPantheons, getGods, createPantheon, getGod, createGod };
+async function deleteGod(name) {
+  const SQL = `DELETE FROM gods WHERE name=$1`;
+  return await pool.query(SQL, [name]);
+}
+
+module.exports = {
+  getPantheons,
+  getGods,
+  createPantheon,
+  getGod,
+  createGod,
+  deleteGod,
+};

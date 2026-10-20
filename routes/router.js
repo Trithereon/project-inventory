@@ -7,6 +7,7 @@ router.post("/pantheon/new", controller.pantheonPost);
 router.post("/god/new", controller.godPost);
 router.get("/pantheon/:id/view", controller.pantheonGet);
 router.get("/god/:id/view", controller.godGet);
+router.delete("/god/:id", controller.godDelete);
 
 router.all("{*splat}", (req, res) => {
   console.log("404 triggered by:", req.method, req.originalUrl);

@@ -11,7 +11,8 @@
       }
     </script>
 
-    <button onclick="toggleForm()">Create new god</button>
+    <a href="/">Go back to homepage</a>
+    <button class="create-btn" onclick="toggleForm()">Create new god</button>
     <form action="/god/new" method="POST">
       <div>
         <label for="name">Name: </label>
@@ -72,8 +73,15 @@
     <% gods.forEach((god) => { %>
     <div class="god-block">
       <h3>
-        <a href="/god/<%= god.name.toLowerCase() %>/view"><%= god.name %></a>
+        <a href="/god/<%= god.name %>/view"><%= god.name %></a>
       </h3>
+      <button
+        class="delete-btn"
+        data-action="deleteGod"
+        data-id="<%= god.name %>"
+      >
+        Delete god
+      </button>
       <small>
         <%= god.gender %>,
         <%= god.status %>
