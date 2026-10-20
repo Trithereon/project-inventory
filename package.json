@@ -8,6 +8,7 @@
     "dev-docker": "docker compose up -f docker-compose.dev.yaml --build -d",
     "docker": "docker compose up -f docker-compose.prod.yaml --build -d",
     "pop": "node --env-file=.env ./db/populatedb.js",
+    "debug": "node --env-file=.env --inspect --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -51,5 +51,5 @@ exports.godPost = async (req, res) => {
   if (!name)
     return res.status(400).send("Error 400 Bad Request - invalid input");
   await db.createGod(req.body);
-  return res.redirect("/"); // TODO: fix redir to point to current pantheon
+  return res.redirect(req.headers.referer);
 };
