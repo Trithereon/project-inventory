@@ -40,12 +40,19 @@
     </form>
 
     <% pantheons.forEach((pantheon)=>{ %>
-    <div>
+    <div class="pantheon-block">
       <h3 class="name">
-        <a href="/pantheon/<%= pantheon.name %>/view"><%= pantheon.name %></a>
+        <a href="/pantheon/view/<%= pantheon.name %>"><%= pantheon.name %></a>
       </h3>
       <small class="origin"><%= pantheon.origin %></small>
       <div class="description"><%= pantheon.description %></div>
+      <button
+        class="delete-btn"
+        data-action="deletePantheon"
+        data-id="<%= pantheon.name %>"
+      >
+        Delete pantheon
+      </button>
     </div>
     <% }) %>
 

@@ -3,13 +3,13 @@ const { body, validationResult, matchedData } = require("express-validator");
 
 exports.indexGet = async (req, res) => {
   return res.render("index", {
-    title: "Pantheon",
+    title: "Gods of Ancient Times",
     pantheons: await db.getPantheons(),
   });
 };
 
 exports.pantheonGet = async (req, res) => {
-  const pantheon = req.params.id;
+  const pantheon = req.params.name;
   const pantheons = (await db.getPantheons()).map((pantheon) => pantheon.name);
   // Prevent arbitrary pantheon name user input. TODO: Proper validation with matchedData would be better.
   if (!pantheons.includes(pantheon)) {
@@ -25,10 +25,10 @@ exports.pantheonGet = async (req, res) => {
 
 exports.godGet = async (req, res) => {
   // insert validation here
-  const name = req.params.id;
-  const [god] = await db.getGod(name);
+  const id = req.params.id;
+  const [god] = await db.getGod(id);
   return res.render("god", {
-    title: name,
+    title: req.params.name,
     god: god,
   });
 };
@@ -55,5 +55,11 @@ exports.godPost = async (req, res) => {
 exports.godDelete = async (req, res) => {
   // consider adding confirmation or password check here
   await db.deleteGod(req.params.id);
+  return res.sendStatus(204);
+};
+
+exports.pantheonDelete = async (req, res) => {
+  // consider adding confirmation or password check here
+  await db.deletePantheon(req.params.id);
   return res.sendStatus(204);
 };

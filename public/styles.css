@@ -1,5 +1,6 @@
 :root {
   font-family: Roboto, system-ui, sans-serif;
+  font-display: block;
 }
 
 body {
@@ -14,15 +15,38 @@ body {
   justify-content: space-between;
 }
 
-.god-block {
+h3 {
+  margin-bottom: 0;
+}
+
+a {
+  width: fit-content;
+  padding: 8px 0;
+}
+
+a:hover {
+  background: lightblue;
+}
+
+.god-block,
+.pantheon-block {
   display: flex;
   flex-direction: column;
   padding-bottom: 40px;
+  gap: 10px;
 }
 
 .create-btn,
 .delete-btn {
   width: fit-content;
+}
+
+.create-btn {
+  background-color: yellowgreen;
+}
+
+.delete-btn {
+  background-color: darksalmon;
 }
 
 form {
@@ -34,7 +58,8 @@ form {
 }
 
 img {
-  max-width: 1024px;
+  max-width: min(100%, 1024px);
+  align-self: flex-start;
 }
 
 footer {
@@ -43,6 +68,6 @@ footer {
 
 @media (max-width: 512px) {
   img {
-    max-width: 400px;
+    max-width: min(100%, 400px);
   }
 }

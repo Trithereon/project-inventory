@@ -15,9 +15,11 @@ async function getGods(pantheon) {
   return rows;
 }
 
-async function getGod(name) {
-  const SQL = `SELECT * FROM gods
-                WHERE name ILIKE '${name}'`;
+async function getGod(id) {
+  const SQL = `SELECT g.*, p.name AS pantheon FROM gods AS g
+                INNER JOIN pantheons AS p 
+                  ON g.pantheon_id = p.id
+                    WHERE g.id = '${id}'`;
   const { rows } = await pool.query(SQL);
   return rows;
 }
@@ -45,8 +47,13 @@ async function createGod(god) {
   ]);
 }
 
-async function deleteGod(name) {
-  const SQL = `DELETE FROM gods WHERE name=$1`;
+async function deleteGod(id) {
+  const SQL = `DELETE FROM gods WHERE id=$1`;
+  return await pool.query(SQL, [id]);
+}
+
+async function deletePantheon(name) {
+  const SQL = `DELETE FROM pantheons WHERE name=$1`;
   return await pool.query(SQL, [name]);
 }
 
@@ -57,4 +64,5 @@ module.exports = {
   getGod,
   createGod,
   deleteGod,
+  deletePantheon,
 };

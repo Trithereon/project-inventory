@@ -3,14 +3,24 @@
   <%- include("./partials/head", {title:title}) %>
   <body>
     <%- include("./partials/header", {title:title}) %>
-
+    <a href="/pantheon/view/<%= god.pantheon %>"
+      >Go back to
+      <%= god.pantheon %>
+      pantheon</a
+    >
     <div class="god-block">
       <small>
-        <%= god.gender %>,
-        <%= god.status %>
+        <%= god.gender || "Gender unknown" %>,
+        <%= god.status || "Status unknown" %>
       </small>
       <div class="description"><%= god.description %></div>
-      <img src="<%= god.img_url %>" alt="Image of <%= god.name %>" />
+      <% if (god.img_url) { %>
+      <img
+        src="<%= god.img_url %>"
+        alt="Image of
+      <%= god.name %>"
+      />
+      <% } %>
     </div>
 
     <%- include("./partials/footer") %>

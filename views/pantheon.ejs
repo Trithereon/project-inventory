@@ -12,6 +12,7 @@
     </script>
 
     <a href="/">Go back to homepage</a>
+
     <button class="create-btn" onclick="toggleForm()">Create new god</button>
     <form action="/god/new" method="POST">
       <div>
@@ -73,8 +74,19 @@
     <% gods.forEach((god) => { %>
     <div class="god-block">
       <h3>
-        <a href="/god/<%= god.name %>/view"><%= god.name %></a>
+        <a href="/god/<%= god.id %>/<%= god.name %>"><%= god.name %></a>
       </h3>
+      <small>
+        <%= god.gender || "Gender unknown" %>,
+        <%= god.status || "Status unknown" %>
+      </small>
+      <% if (god.img_url) { %>
+      <img
+        src="<%= god.img_url %>"
+        alt="Image of
+      <%= god.name %>"
+      />
+      <% } %>
       <button
         class="delete-btn"
         data-action="deleteGod"
@@ -82,11 +94,6 @@
       >
         Delete god
       </button>
-      <small>
-        <%= god.gender %>,
-        <%= god.status %>
-      </small>
-      <img src="<%= god.img_url %>" alt="Image of <%= god.name %>" />
     </div>
     <% }) %>
 
