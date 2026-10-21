@@ -70,12 +70,12 @@ async function createGod(god) {
 }
 
 async function deleteGod(id) {
-  const SQL = `DELETE FROM gods WHERE id=$1`;
+  const SQL = `DELETE FROM gods WHERE id = $1`;
   return await pool.query(SQL, [id]);
 }
 
 async function deletePantheon(name) {
-  const SQL = `DELETE FROM pantheons WHERE name=$1`;
+  const SQL = `DELETE FROM pantheons WHERE name = $1`;
   return await pool.query(SQL, [name]);
 }
 

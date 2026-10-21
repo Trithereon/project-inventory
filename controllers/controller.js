@@ -62,6 +62,6 @@ exports.godDelete = async (req, res) => {
 
 exports.pantheonDelete = async (req, res) => {
   // consider adding confirmation or password check here
-  await db.deletePantheon(req.params.id);
+  await db.deletePantheon(req.params.name);
   return res.sendStatus(204);
 };
