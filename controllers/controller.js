@@ -30,6 +30,8 @@ exports.godGet = async (req, res) => {
   return res.render("god", {
     title: req.params.name,
     god: god,
+    symbols: await db.getGodSymbols(id),
+    domains: await db.getGodDomains(id),
   });
 };
 

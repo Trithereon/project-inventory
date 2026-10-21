@@ -19,6 +19,10 @@ h3 {
   margin-bottom: 0;
 }
 
+ul {
+  margin-top: 0;
+}
+
 a {
   width: fit-content;
   padding: 8px 0;
@@ -60,6 +64,11 @@ form {
 img {
   max-width: min(100%, 1024px);
   align-self: flex-start;
+}
+
+.symbol,
+.domain {
+  padding: 0;
 }
 
 footer {

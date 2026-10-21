@@ -14,12 +14,37 @@
         <%= god.status || "Status unknown" %>
       </small>
       <div class="description"><%= god.description %></div>
+
       <% if (god.img_url) { %>
       <img
         src="<%= god.img_url %>"
         alt="Image of
-      <%= god.name %>"
+        <%= god.name %>"
       />
+      <% } %>
+      <% if (symbols) { %>
+      <h3>Symbols:</h3>
+      <ul>
+        <% symbols.forEach((symbol) => { %>
+        <li>
+          <a class="symbol" href="/symbol/<%= symbol.id %>/<%= symbol.symbol %>"
+            ><%= symbol.symbol %></a
+          >
+        </li>
+        <% }) %>
+      </ul>
+      <% } %>
+      <% if (domains) { %>
+      <h3>Domains:</h3>
+      <ul>
+        <% domains.forEach((domain) => { %>
+        <li>
+          <a class="domain" href="/domain/<%= domain.id %>/<%= domain.name %>"
+            ><%= domain.name %></a
+          >
+        </li>
+        <% }) %>
+      </ul>
       <% } %>
     </div>
 
