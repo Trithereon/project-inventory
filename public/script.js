@@ -1,4 +1,7 @@
-// Delete god
+function toggleForm(id) {
+  const form = document.getElementById(id);
+  return form.classList.toggle("visible");
+}
 
 async function handleDeleteGod(id) {
   const url = `/god/${id}`;
@@ -24,11 +27,18 @@ async function handleDeletePantheon(name) {
   }
 }
 
+const actionHandlers = {
+  deleteGod: { fn: handleDeleteGod, reload: true },
+  deletePantheon: { fn: handleDeletePantheon, reload: true },
+  toggleForm: { fn: toggleForm, reload: false },
+};
+
 document.addEventListener("click", async (e) => {
-  if (e.target.dataset.action === "deleteGod") {
-    await handleDeleteGod(e.target.dataset.id);
-  } else if (e.target.dataset.action === "deletePantheon") {
-    await handleDeletePantheon(e.target.dataset.id);
-  } else return;
-  return window.location.reload();
+  const { action, id } = e.target.dataset;
+  const handler = actionHandlers[action];
+  if (!handler) return;
+
+  await handler.fn(id);
+  if (handler.reload) return window.location.reload();
+  else return;
 });

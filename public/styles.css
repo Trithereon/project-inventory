@@ -41,7 +41,8 @@ a:hover {
 }
 
 .create-btn,
-.delete-btn {
+.delete-btn,
+.edit-btn {
   width: fit-content;
 }
 
@@ -51,6 +52,10 @@ a:hover {
 
 .delete-btn {
   background-color: darksalmon;
+}
+
+.edit-btn {
+  background-color: goldenrod;
 }
 
 form {

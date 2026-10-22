@@ -41,3 +41,10 @@ Borrowing assets and text content.
 ## App architecture
 
 - Probably will need a controller and router for domains, gods, and pantheons. Or maybe the app is simple enough for me to use juste one router and controller.
+
+## TODO LIST:
+
+- [ ] Add edit/update to pantheons and gods
+- [ ] Make views for domains and symbols
+- [ ] Add counterparts for Roman/Greek gods
+- [ ] Add family data

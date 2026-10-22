@@ -4,17 +4,14 @@
   <body>
     <%- include("./partials/header", {title:title}) %>
 
-    <script>
-      function toggleForm() {
-        const form = document.querySelector("form");
-        return form.classList.toggle("visible");
-      }
-    </script>
-
-    <button class="create-btn" onclick="toggleForm()">
+    <button
+      class="create-btn"
+      data-id="pantheonCreate"
+      data-action="toggleForm"
+    >
       Create new pantheon
     </button>
-    <form action="/pantheon/new" method="POST">
+    <form id="pantheonCreate" action="/pantheon/new" method="POST">
       <div>
         <label for="name">Name: </label>
         <input type="text" id="name" name="name" placeholder="e.g. Roman" />
@@ -53,6 +50,14 @@
       >
         Delete pantheon
       </button>
+      <button
+        class="edit-btn"
+        data-action="toggleForm"
+        data-id="editForm-<%= pantheon.name %>"
+      >
+        Edit pantheon
+      </button>
+      <%- include ("./partials/editPantheonForm", {pantheon: pantheon}) %>
     </div>
     <% }) %>
 

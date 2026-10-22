@@ -1,0 +1,38 @@
+<form id="editForm-<%= pantheon.name %>" action="/pantheon/edit" method="POST">
+  <div>
+    <label for="name">Name: </label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      placeholder="e.g. Roman"
+      value="<%= pantheon.name %>"
+    />
+  </div>
+  <div>
+    <label for="origin">Region of origin: </label>
+    <input
+      type="text"
+      id="origin"
+      name="origin"
+      placeholder="e.g. Rome, 2000 BC"
+      value="<%= pantheon.origin %>"
+    />
+  </div>
+  <div>
+    <label for="description">Description: </label>
+    <textarea
+      id="description"
+      name="description"
+      placeholder="A brief summary"
+      value="<%= pantheon.description %>"
+    ></textarea>
+  </div>
+  <button
+    data-action="toggleForm"
+    data-id="editPantheon<%= pantheon.name %>"
+    type="submit"
+  >
+    Submit changes
+  </button>
+</form>
