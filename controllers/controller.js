@@ -17,7 +17,7 @@ exports.pantheonGet = async (req, res) => {
     return res.status(404).render("404");
   }
   return res.render("pantheon", {
-    title: name,
+    title: name + " Pantheon",
     gods: await db.getGods(id),
     pantheons: await db.getPantheons(),
   });
