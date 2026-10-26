@@ -9,16 +9,16 @@ exports.indexGet = async (req, res) => {
 };
 
 exports.pantheonGet = async (req, res) => {
-  const pantheon = req.params.name;
+  const { name, id } = req.params;
   const pantheons = (await db.getPantheons()).map((pantheon) => pantheon.name);
   // Prevent arbitrary pantheon name user input. TODO: Proper validation with matchedData would be better.
-  if (!pantheons.includes(pantheon)) {
+  if (!pantheons.includes(name)) {
     console.log("404 triggered by:", req.method, req.originalUrl);
     return res.status(404).render("404");
   }
   return res.render("pantheon", {
-    title: pantheon,
-    gods: await db.getGods(pantheon),
+    title: name,
+    gods: await db.getGods(id),
     pantheons: await db.getPantheons(),
   });
 };
@@ -45,6 +45,15 @@ exports.pantheonPost = async (req, res) => {
   return res.redirect("/");
 };
 
+exports.pantheonPut = async (req, res) => {
+  // insert validation here
+  const { name, origin, description } = req.body;
+  if (!name || !origin || !description)
+    return res.status(400).send("Error 400 Bad Request - invalid input");
+  await db.updatePantheon(req.params.id, req.body);
+  return res.sendStatus(200);
+};
+
 exports.godPost = async (req, res) => {
   // insert validation here
   const { name } = req.body;
@@ -62,6 +71,6 @@ exports.godDelete = async (req, res) => {
 
 exports.pantheonDelete = async (req, res) => {
   // consider adding confirmation or password check here
-  await db.deletePantheon(req.params.name);
+  await db.deletePantheon(req.params.id);
   return res.sendStatus(204);
 };

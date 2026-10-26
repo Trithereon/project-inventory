@@ -1,22 +1,20 @@
 const pool = require("./pool");
 
 async function getPantheons() {
-  const SQL = `SELECT * FROM pantheons`;
+  const SQL = `SELECT * FROM pantheons ORDER BY id ASC`;
   const { rows } = await pool.query(SQL);
   return rows;
 }
 
-async function getGods(pantheon) {
+async function getGods(pantheonId) {
   const SQL = `SELECT * FROM gods
-                WHERE pantheon_id = 
-                  (SELECT id FROM pantheons 
-                    WHERE name ILIKE $1)`;
-  const { rows } = await pool.query(SQL, [pantheon]);
+                WHERE pantheon_id = $1`;
+  const { rows } = await pool.query(SQL, [pantheonId]);
   return rows;
 }
 
 async function getGod(id) {
-  const SQL = `SELECT g.*, p.name AS pantheon FROM gods AS g
+  const SQL = `SELECT g.*, p.name AS p_name FROM gods AS g
                 INNER JOIN pantheons AS p 
                   ON g.pantheon_id = p.id
                     WHERE g.id = $1`;
@@ -74,9 +72,21 @@ async function deleteGod(id) {
   return await pool.query(SQL, [id]);
 }
 
-async function deletePantheon(name) {
-  const SQL = `DELETE FROM pantheons WHERE name = $1`;
-  return await pool.query(SQL, [name]);
+async function deletePantheon(id) {
+  const SQL = `DELETE FROM pantheons WHERE id = $1`;
+  return await pool.query(SQL, [id]);
+}
+
+async function updatePantheon(id, pantheon) {
+  const SQL = `UPDATE pantheons
+                SET name = $1, origin = $2, description = $3
+                  WHERE id = $4`;
+  return await pool.query(SQL, [
+    pantheon.name,
+    pantheon.origin,
+    pantheon.description,
+    id,
+  ]);
 }
 
 module.exports = {
@@ -85,6 +95,7 @@ module.exports = {
   getGodSymbols,
   getGodDomains,
   createPantheon,
+  updatePantheon,
   getGod,
   createGod,
   deleteGod,

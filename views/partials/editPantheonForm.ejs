@@ -1,4 +1,9 @@
-<form id="editForm-<%= pantheon.name %>" action="/pantheon/edit" method="POST">
+<form
+  id="editForm-<%= pantheon.name %>"
+  action="/pantheon/edit/<%= pantheon.id %>"
+  method="POST"
+  data-form="edit"
+>
   <div>
     <label for="name">Name: </label>
     <input
@@ -25,14 +30,10 @@
       id="description"
       name="description"
       placeholder="A brief summary"
-      value="<%= pantheon.description %>"
-    ></textarea>
+      rows="10"
+      cols="50"
+    >
+<%= pantheon.description %></textarea>
   </div>
-  <button
-    data-action="toggleForm"
-    data-id="editPantheon<%= pantheon.name %>"
-    type="submit"
-  >
-    Submit changes
-  </button>
+  <button type="submit">Submit changes</button>
 </form>

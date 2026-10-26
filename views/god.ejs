@@ -3,7 +3,7 @@
   <%- include("./partials/head", {title:title}) %>
   <body>
     <%- include("./partials/header", {title:title}) %>
-    <a href="/pantheon/view/<%= god.pantheon %>"
+    <a href="/pantheon/<%= god.pantheon_id %>/<%= god.p_name %>"
       >Go back to
       <%= god.pantheon %>
       pantheon</a

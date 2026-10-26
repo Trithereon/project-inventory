@@ -11,7 +11,7 @@
     >
       Create new pantheon
     </button>
-    <form id="pantheonCreate" action="/pantheon/new" method="POST">
+    <form id="pantheonCreate" action="/pantheon/create" method="POST">
       <div>
         <label for="name">Name: </label>
         <input type="text" id="name" name="name" placeholder="e.g. Roman" />
@@ -31,6 +31,8 @@
           id="description"
           name="description"
           placeholder="A brief summary"
+          rows="9"
+          cols="45"
         ></textarea>
       </div>
       <button type="submit">Create new pantheon</button>
@@ -39,14 +41,16 @@
     <% pantheons.forEach((pantheon)=>{ %>
     <div class="pantheon-block">
       <h3 class="name">
-        <a href="/pantheon/view/<%= pantheon.name %>"><%= pantheon.name %></a>
+        <a href="/pantheon/<%= pantheon.id %>/<%= pantheon.name %>"
+          ><%= pantheon.name %></a
+        >
       </h3>
       <small class="origin"><%= pantheon.origin %></small>
       <div class="description"><%= pantheon.description %></div>
       <button
         class="delete-btn"
         data-action="deletePantheon"
-        data-id="<%= pantheon.name %>"
+        data-id="<%= pantheon.id %>"
       >
         Delete pantheon
       </button>

@@ -2,13 +2,21 @@ const { Router } = require("express");
 const router = Router();
 const controller = require("../controllers/controller");
 
+// GET
 router.get("/", controller.indexGet);
-router.post("/pantheon/new", controller.pantheonPost);
-router.post("/god/new", controller.godPost);
-router.get("/pantheon/view/:name", controller.pantheonGet);
+router.get("/pantheon/:id/:name", controller.pantheonGet);
 router.get("/god/:id/:name", controller.godGet);
-router.delete("/god/:id", controller.godDelete);
-router.delete("/pantheon/:name", controller.pantheonDelete);
+
+// POST
+router.post("/pantheon/create", controller.pantheonPost);
+router.post("/god/create", controller.godPost);
+
+// DELETE
+router.delete("/god/delete/:id", controller.godDelete);
+router.delete("/pantheon/delete/:id", controller.pantheonDelete);
+
+// PUT
+router.put("/pantheon/edit/:id", controller.pantheonPut);
 
 router.all("{*splat}", (req, res) => {
   console.log("404 triggered by:", req.method, req.originalUrl);

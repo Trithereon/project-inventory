@@ -9,6 +9,7 @@ const HOST = process.env.HOST;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const publicPath = path.join(__dirname, "public");
 app.use(express.static(publicPath));
