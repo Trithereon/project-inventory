@@ -44,7 +44,8 @@ Borrowing assets and text content.
 
 ## TODO LIST:
 
-- [ ] Add edit/update to pantheons and gods
-- [ ] Make views for domains and symbols
+- [x] Add edit/update to pantheons and gods
+- [x] Make views for domains and symbols
+- [ ] Implement server-side input validation
 - [ ] Add counterparts for Roman/Greek gods
 - [ ] Add family data
