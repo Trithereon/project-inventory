@@ -94,9 +94,14 @@
       >
         Delete god
       </button>
-      <button class="edit-btn" data-action="editGod" data-id="<%= god.id %>">
+      <button
+        class="edit-btn"
+        data-action="toggleForm"
+        data-id="editForm-<%= god.name %>"
+      >
         Edit god
       </button>
+      <%- include ("./partials/editGodForm", {god: god}) %>
     </div>
     <% }) %>
 

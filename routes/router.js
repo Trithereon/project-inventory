@@ -17,6 +17,7 @@ router.delete("/pantheon/delete/:id", controller.pantheonDelete);
 
 // PUT
 router.put("/pantheon/edit/:id", controller.pantheonPut);
+router.put("/god/edit/:id", controller.godPut);
 
 router.all("{*splat}", (req, res) => {
   console.log("404 triggered by:", req.method, req.originalUrl);

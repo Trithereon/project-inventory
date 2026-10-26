@@ -56,11 +56,20 @@ exports.pantheonPut = async (req, res) => {
 
 exports.godPost = async (req, res) => {
   // insert validation here
-  const { name } = req.body;
-  if (!name)
+  const { name, pantheon_id } = req.body;
+  if (!name || !pantheon_id)
     return res.status(400).send("Error 400 Bad Request - invalid input");
   await db.createGod(req.body);
   return res.redirect(req.headers.referer);
+};
+
+exports.godPut = async (req, res) => {
+  // insert validation here
+  const { name, pantheon_id } = req.body;
+  if (!name || !pantheon_id)
+    return res.status(400).send("Error 400 Bad Request - invalid input");
+  await db.updateGod(req.params.id, req.body);
+  return res.sendStatus(200);
 };
 
 exports.godDelete = async (req, res) => {

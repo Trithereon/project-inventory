@@ -8,7 +8,7 @@ async function getPantheons() {
 
 async function getGods(pantheonId) {
   const SQL = `SELECT * FROM gods
-                WHERE pantheon_id = $1`;
+                WHERE pantheon_id = $1 ORDER BY id ASC`;
   const { rows } = await pool.query(SQL, [pantheonId]);
   return rows;
 }
@@ -89,6 +89,21 @@ async function updatePantheon(id, pantheon) {
   ]);
 }
 
+async function updateGod(id, god) {
+  const SQL = `UPDATE gods
+                SET pantheon_id = $1, name = $2, gender = $3, description = $4, status = $5, img_url = $6
+                  WHERE id = $7`;
+  return await pool.query(SQL, [
+    god.pantheon_id,
+    god.name,
+    god.gender,
+    god.description,
+    god.status,
+    god.img_url,
+    id,
+  ]);
+}
+
 module.exports = {
   getPantheons,
   getGods,
@@ -96,6 +111,7 @@ module.exports = {
   getGodDomains,
   createPantheon,
   updatePantheon,
+  updateGod,
   getGod,
   createGod,
   deleteGod,
