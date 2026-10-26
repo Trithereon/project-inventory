@@ -34,13 +34,39 @@ async function getGodSymbols(god_id) {
 }
 
 async function getGodDomains(god_id) {
-  const SQL = `SELECT domains.name FROM domains
+  const SQL = `SELECT domains.name, domains.id FROM domains
                 INNER JOIN god_domains
                   ON domains.id = god_domains.domain_id
                     INNER JOIN gods
                       ON god_domains.god_id = gods.id
                         WHERE gods.id = $1`;
   const { rows } = await pool.query(SQL, [god_id]);
+  return rows;
+}
+
+async function getDomainGods(domain_id) {
+  const SQL = `SELECT g.id, g.name, p.name AS p_name FROM gods AS g
+                INNER JOIN god_domains
+                  ON g.id = god_domains.god_id
+                    INNER JOIN domains AS d
+                      ON d.id = god_domains.domain_id
+                        INNER JOIN pantheons AS p
+                          ON p.id = g.pantheon_id
+                            WHERE d.id = $1`;
+  const { rows } = await pool.query(SQL, [domain_id]);
+  return rows;
+}
+
+async function getSymbolGods(symbol_id) {
+  const SQL = `SELECT g.id, g.name, p.name AS p_name FROM gods AS g
+                INNER JOIN god_symbols
+                  ON g.id = god_symbols.god_id
+                    INNER JOIN symbols AS s
+                      ON s.id = god_symbols.symbol_id
+                        INNER JOIN pantheons AS p
+                          ON p.id = g.pantheon_id
+                            WHERE s.id = $1`;
+  const { rows } = await pool.query(SQL, [symbol_id]);
   return rows;
 }
 
@@ -109,6 +135,8 @@ module.exports = {
   getGods,
   getGodSymbols,
   getGodDomains,
+  getDomainGods,
+  getSymbolGods,
   createPantheon,
   updatePantheon,
   updateGod,

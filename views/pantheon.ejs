@@ -4,13 +4,6 @@
   <body>
     <%- include("./partials/header", {title:title}) %>
 
-    <script>
-      function toggleForm() {
-        const form = document.querySelector("form");
-        return form.classList.toggle("visible");
-      }
-    </script>
-
     <a href="/">Go back to homepage</a>
 
     <button class="create-btn" onclick="toggleForm()">Create new god</button>

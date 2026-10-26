@@ -6,6 +6,8 @@ const controller = require("../controllers/controller");
 router.get("/", controller.indexGet);
 router.get("/pantheon/:id/:name", controller.pantheonGet);
 router.get("/god/:id/:name", controller.godGet);
+router.get("/domain/:id/:name", controller.domainGet);
+router.get("/symbol/:id/:name", controller.symbolGet);
 
 // POST
 router.post("/pantheon/create", controller.pantheonPost);

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("./partials/head", {title:title}) %>
+  <body>
+    <%- include("./partials/header", {title:title}) %>
+    <a href="/">Go back to homepage</a>
+    <div class="symbol-block">
+      <% if (gods) { %>
+      <h3>Gods associated with this symbol:</h3>
+      <ul>
+        <% gods.forEach((god) => { %>
+        <li>
+          <a class="symbol" href="/god/<%= god.id %>/<%= god.name %>">
+            <%= god.name %>
+            (<%= god.p_name %>)
+          </a>
+        </li>
+        <% }) %>
+      </ul>
+      <% } %>
+    </div>
+
+    <%- include("./partials/footer") %>
+  </body>
+</html>

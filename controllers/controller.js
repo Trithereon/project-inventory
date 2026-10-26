@@ -35,6 +35,26 @@ exports.godGet = async (req, res) => {
   });
 };
 
+exports.domainGet = async (req, res) => {
+  // insert validation here
+  const { id, name } = req.params;
+  return res.render("domain", {
+    title: "Domain: " + name,
+    domain: name,
+    gods: await db.getDomainGods(id),
+  });
+};
+
+exports.symbolGet = async (req, res) => {
+  // insert validation here
+  const { id, name } = req.params;
+  return res.render("symbol", {
+    title: "Symbol: " + name,
+    symbol: name,
+    gods: await db.getSymbolGods(id),
+  });
+};
+
 exports.pantheonPost = async (req, res) => {
   // insert validation here
   // must prevent name reuse, prevent null, sanitize
