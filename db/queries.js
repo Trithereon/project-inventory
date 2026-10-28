@@ -6,6 +6,13 @@ async function getPantheons() {
   return rows;
 }
 
+async function getPantheon(id, name) {
+  const SQL = `SELECT * FROM pantheons
+                WHERE id = $1 AND name = $2`;
+  const { rows } = await pool.query(SQL, [id, name]);
+  return rows;
+}
+
 async function getGods(pantheonId) {
   const SQL = `SELECT * FROM gods
                 WHERE pantheon_id = $1 ORDER BY id ASC`;
@@ -13,12 +20,12 @@ async function getGods(pantheonId) {
   return rows;
 }
 
-async function getGod(id) {
+async function getGod(id, name) {
   const SQL = `SELECT g.*, p.name AS p_name FROM gods AS g
                 INNER JOIN pantheons AS p 
                   ON g.pantheon_id = p.id
-                    WHERE g.id = $1`;
-  const { rows } = await pool.query(SQL, [id]);
+                    WHERE g.id = $1 AND g.name = $2`;
+  const { rows } = await pool.query(SQL, [id, name]);
   return rows;
 }
 
@@ -44,7 +51,7 @@ async function getGodDomains(god_id) {
   return rows;
 }
 
-async function getDomainGods(domain_id) {
+async function getDomainGods(domain_id, domain_name) {
   const SQL = `SELECT g.id, g.name, p.name AS p_name FROM gods AS g
                 INNER JOIN god_domains
                   ON g.id = god_domains.god_id
@@ -52,8 +59,15 @@ async function getDomainGods(domain_id) {
                       ON d.id = god_domains.domain_id
                         INNER JOIN pantheons AS p
                           ON p.id = g.pantheon_id
-                            WHERE d.id = $1`;
-  const { rows } = await pool.query(SQL, [domain_id]);
+                            WHERE d.id = $1 AND d.name = $2`;
+  const { rows } = await pool.query(SQL, [domain_id, domain_name]);
+  return rows;
+}
+
+async function getDomain(id, name) {
+  const SQL = `SELECT * FROM domains
+                WHERE id = $1 AND name = $2`;
+  const { rows } = await pool.query(SQL, [id, name]);
   return rows;
 }
 
@@ -67,6 +81,13 @@ async function getSymbolGods(symbol_id) {
                           ON p.id = g.pantheon_id
                             WHERE s.id = $1`;
   const { rows } = await pool.query(SQL, [symbol_id]);
+  return rows;
+}
+
+async function getSymbol(id, name) {
+  const SQL = `SELECT * FROM symbols
+                WHERE id = $1 AND symbol = $2`;
+  const { rows } = await pool.query(SQL, [id, name]);
   return rows;
 }
 
@@ -132,11 +153,14 @@ async function updateGod(id, god) {
 
 module.exports = {
   getPantheons,
+  getPantheon,
   getGods,
   getGodSymbols,
   getGodDomains,
   getDomainGods,
   getSymbolGods,
+  getDomain,
+  getSymbol,
   createPantheon,
   updatePantheon,
   updateGod,

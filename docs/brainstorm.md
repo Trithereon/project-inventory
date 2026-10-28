@@ -40,7 +40,7 @@ Borrowing assets and text content.
 
 ## App architecture
 
-- Probably will need a controller and router for domains, gods, and pantheons. Or maybe the app is simple enough for me to use juste one router and controller.
+- Probably will need a controller and router for domains, gods, and pantheons. Or maybe the app is simple enough for me to use just one router and controller.
 
 ## TODO LIST:
 

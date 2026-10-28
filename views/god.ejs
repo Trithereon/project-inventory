@@ -3,11 +3,9 @@
   <%- include("./partials/head", {title:title}) %>
   <body>
     <%- include("./partials/header", {title:title}) %>
-    <a href="/pantheon/<%= god.pantheon_id %>/<%= god.p_name %>"
-      >Go back to
-      <%= god.pantheon %>
-      pantheon</a
-    >
+    <a href="/pantheon/<%= god.pantheon_id %>/<%= god.p_name %>">
+      Go back to <%= god.p_name %> pantheon
+    </a>
     <div class="god-block">
       <small>
         <%= god.gender || "Gender unknown" %>,
@@ -16,11 +14,7 @@
       <div class="description"><%= god.description %></div>
 
       <% if (god.img_url) { %>
-      <img
-        src="<%= god.img_url %>"
-        alt="Image of
-        <%= god.name %>"
-      />
+      <img src="<%= god.img_url %>" alt="Image of <%= god.name %>" />
       <% } %>
       <% if (symbols) { %>
       <h3>Symbols:</h3>
@@ -39,9 +33,9 @@
       <ul>
         <% domains.forEach((domain) => { %>
         <li>
-          <a class="domain" href="/domain/<%= domain.id %>/<%= domain.name %>"
-            ><%= domain.name %></a
-          >
+          <a class="domain" href="/domain/<%= domain.id %>/<%= domain.name %>">
+            <%= domain.name %>
+          </a>
         </li>
         <% }) %>
       </ul>

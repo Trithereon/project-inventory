@@ -22,7 +22,6 @@
     "pg": "^8.23.1"
   },
   "devDependencies": {
-    "prettier-plugin-ejs": "^1.0.3",
     "prettier-plugin-sql": "^0.20.0"
   }
 }
