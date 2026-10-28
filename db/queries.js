@@ -13,6 +13,13 @@ async function getPantheon(id, name) {
   return rows;
 }
 
+async function getPantheonByName(name) {
+  const SQL = `SELECT * FROM pantheons
+                WHERE name = $1`;
+  const { rows } = await pool.query(SQL, [name]);
+  return rows;
+}
+
 async function getGods(pantheonId) {
   const SQL = `SELECT * FROM gods
                 WHERE pantheon_id = $1 ORDER BY id ASC`;
@@ -154,6 +161,7 @@ async function updateGod(id, god) {
 module.exports = {
   getPantheons,
   getPantheon,
+  getPantheonByName,
   getGods,
   getGodSymbols,
   getGodDomains,

@@ -11,7 +11,7 @@ services:
     # networks:
     #   - deploys_net
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://pantheon:51111/"]
+      test: ["CMD", "wget", "-qO-", "http://pantheon:51112/"]
       interval: 30s
       timeout: 5s
       retries: 3

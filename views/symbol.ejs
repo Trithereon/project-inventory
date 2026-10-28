@@ -11,8 +11,7 @@
         <% gods.forEach((god) => { %>
         <li>
           <a class="symbol" href="/god/<%= god.id %>/<%= god.name %>">
-            <%= god.name %>
-            (<%= god.p_name %>)
+            <%= god.name %> (<%= god.p_name %>)
           </a>
         </li>
         <% }) %>

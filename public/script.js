@@ -2,7 +2,9 @@
 // Instead of adding event listeners to each form, just use one and delegate.
 document.addEventListener("submit", async (e) => {
   const form = e.target;
-  if (!form.matches('[data-form="edit"]')) return;
+  if (!form.matches('[data-form="edit"]')) {
+    return;
+  }
 
   e.preventDefault();
 
@@ -14,7 +16,9 @@ document.addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    if (res.ok) window.location.reload();
+    if (res.ok) {
+      window.location.reload();
+    }
   } catch (err) {
     console.error(err);
   }
@@ -58,9 +62,14 @@ const actionHandlers = {
 document.addEventListener("click", async (e) => {
   const { action, id } = e.target.dataset;
   const handler = actionHandlers[action];
-  if (!handler) return;
+  if (!handler) {
+    return;
+  }
 
   await handler.fn(id);
-  if (handler.reload) return window.location.reload();
-  else return;
+  if (handler.reload) {
+    return window.location.reload();
+  } else {
+    return;
+  }
 });

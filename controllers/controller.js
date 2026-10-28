@@ -23,9 +23,10 @@ const validateGetParams = [
     .trim()
     .notEmpty()
     .withMessage("Name is required")
-    .isLength({ min: 1, max: 100 })
+    .isLength({ max: 100 })
     .withMessage("Name is too long")
-    .matches(/^[\p{L}\p{N} '-]+$/u), // unicode regex to allow letters and digits from all alphabets
+    .matches(/^[\p{L}\p{N} '-]+$/u) // unicode regex to allow letters and digits from all alphabets
+    .withMessage("Name can only contain alphanumeric characters"),
 ];
 
 exports.pantheonGet = [
@@ -34,8 +35,8 @@ exports.pantheonGet = [
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        console.log("404 triggered by invalid params: ", req.originalUrl);
-        return res.status(404).render("404");
+        console.log("400 triggered by invalid params: ", req.originalUrl);
+        return res.sendStatus(400);
       }
 
       const { id, name } = req.params;
@@ -63,8 +64,8 @@ exports.godGet = [
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        console.log("404 triggered by invalid params: ", req.originalUrl);
-        return res.status(404).render("404");
+        console.log("400 triggered by invalid params: ", req.originalUrl);
+        return res.sendStatus(400);
       }
 
       const { id, name } = req.params;
@@ -93,8 +94,8 @@ exports.domainGet = [
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        console.log("404 triggered by invalid params: ", req.originalUrl);
-        return res.status(404).render("404");
+        console.log("400 triggered by invalid params: ", req.originalUrl);
+        return res.sendStatus(400);
       }
 
       const { id, name } = req.params;
@@ -122,8 +123,8 @@ exports.symbolGet = [
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        console.log("404 triggered by invalid params: ", req.originalUrl);
-        return res.status(404).render("404");
+        console.log("400 triggered by invalid params: ", req.originalUrl);
+        return res.sendStatus(400);
       }
 
       const { id, name } = req.params;
@@ -145,52 +146,149 @@ exports.symbolGet = [
   },
 ];
 
-exports.pantheonPost = async (req, res, next) => {
-  // insert validation here
-  // must prevent name reuse, prevent null, sanitize
-  try {
-    const { name, origin, description } = req.body;
-    if (!name || !origin || !description)
-      return res.status(400).send("Error 400 Bad Request - invalid input");
-    await db.createPantheon(req.body);
-    return res.redirect("/");
-  } catch (err) {
-    next(err);
-  }
-};
+const validatePantheonBody = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ max: 100 })
+    .withMessage("Name is too long")
+    .matches(/^[\p{L}\p{N} '-]+$/u)
+    .withMessage("Name can only contain alphanumeric characters")
+    .bail() // Aborts further validation if a failure has occurred.
+    .custom(async (req) => {
+      const [pantheon] = await db.getPantheonByName(req.body.name);
+      if (pantheon) {
+        throw new Error("Pantheon name already exists");
+      }
+      return true;
+    }),
+  body("origin")
+    .trim()
+    .notEmpty()
+    .withMessage("Origin is required")
+    .isLength({ max: 100 })
+    .withMessage("Origin max length 100 characters"),
+  body("description")
+    .trim()
+    .notEmpty()
+    .withMessage("Description is required")
+    .isLength({ max: 500 })
+    .withMessage("Description max length is 500 characters"),
+];
 
-exports.pantheonPut = async (req, res, next) => {
-  // insert validation here
-  try {
-    const { name, origin, description } = req.body;
-    if (!name || !origin || !description)
-      return res.status(400).send("Error 400 Bad Request - invalid input");
-    await db.updatePantheon(req.params.id, req.body);
-    return res.sendStatus(200);
-  } catch (err) {
-    next(err);
-  }
-};
+exports.pantheonPost = [
+  validatePantheonBody,
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        console.log(
+          "400 triggered by invalid body: ",
+          req.method,
+          req.originalUrl,
+        );
+        return res.status(400).send("Error 400 Bad Request - invalid input");
+      }
 
-exports.godPost = async (req, res, next) => {
-  // insert validation here
-  try {
-    const { name, pantheon_id } = req.body;
-    if (!name || !pantheon_id)
-      return res.status(400).send("Error 400 Bad Request - invalid input");
-    await db.createGod(req.body);
-    return res.redirect(req.headers.referer);
-  } catch (err) {
-    next(err);
-  }
-};
+      await db.createPantheon(req.body);
+      return res.redirect("/");
+    } catch (err) {
+      next(err);
+    }
+  },
+];
+
+exports.pantheonPut = [
+  validatePantheonBody,
+  async (req, res, next) => {
+    // insert validation here
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        console.log(
+          "400 triggered by invalid body: ",
+          req.method,
+          req.originalUrl,
+        );
+        return res.status(400).send("Error 400 Bad Request - invalid input");
+      }
+
+      await db.updatePantheon(req.params.id, req.body);
+      return res.sendStatus(200);
+    } catch (err) {
+      next(err);
+    }
+  },
+];
+
+const validateGodBody = [
+  body("pantheon_id")
+    .isInt({ min: 1 })
+    .withMessage("A pantheon must be chosen")
+    .toInt(),
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ max: 100 })
+    .withMessage("Name is too long")
+    .matches(/^[\p{L}\p{N} '-]+$/u)
+    .withMessage("Name can only contain alphanumeric characters"),
+  body("gender")
+    .optional({ values: "falsy" })
+    .trim()
+    .isIn(["Male", "Female", "Both"])
+    .withMessage("Gender must be one of: Male, Female, Both"),
+  body("description")
+    .optional({ values: "falsy" })
+    .isString()
+    .withMessage("Description must be text only")
+    .isLength({ max: 500 })
+    .withMessage("Description length is max 500 characters"),
+  body("status")
+    .optional({ values: "falsy" })
+    .trim()
+    .isIn(["Major", "Minor"])
+    .withMessage("Status must be one of: Major, Minor"),
+  body("img_url")
+    .optional({ values: "falsy" })
+    .trim()
+    .isURL({
+      protocols: ["https"],
+      require_protocol: true,
+      require_valid_protocol: true,
+      require_tld: true, // "top-level domain" like .com
+      disallow_auth: true, // no user:pass@host
+      allow_underscores: false,
+      max_allowed_length: 2048,
+    })
+    .withMessage("Image URL must be valid"),
+];
+
+exports.godPost = [
+  validateGodBody,
+  async (req, res, next) => {
+    try {
+      const { name, pantheon_id } = req.body;
+      if (!name || !pantheon_id) {
+        return res.status(400).send("Error 400 Bad Request - invalid input");
+      }
+      await db.createGod(req.body);
+      return res.redirect(req.headers.referer);
+    } catch (err) {
+      next(err);
+    }
+  },
+];
 
 exports.godPut = async (req, res, next) => {
   // insert validation here
   try {
     const { name, pantheon_id } = req.body;
-    if (!name || !pantheon_id)
+    if (!name || !pantheon_id) {
       return res.status(400).send("Error 400 Bad Request - invalid input");
+    }
     await db.updateGod(req.params.id, req.body);
     return res.sendStatus(200);
   } catch (err) {

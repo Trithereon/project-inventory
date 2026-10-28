@@ -47,5 +47,8 @@ Borrowing assets and text content.
 - [x] Add edit/update to pantheons and gods
 - [x] Make views for domains and symbols
 - [ ] Implement server-side input validation
+- [ ] Fix: invalid form input should trigger a re-render of the form and display the validation error messages, allowing the user to fix the input and retry submitting.
+- [ ] Add ability to create domains/symbols
+- [ ] Add fields for assigning domains/symbols to god creation form
 - [ ] Add counterparts for Roman/Greek gods
 - [ ] Add family data
