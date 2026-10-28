@@ -39,7 +39,7 @@ exports.pantheonGet = [
         return res.sendStatus(400);
       }
 
-      const { id, name } = req.params;
+      const { id, name } = matchedData(req);
       const [pantheon] = await db.getPantheon(id, name); // returns {pantheon object}
 
       if (!pantheon) {
@@ -68,7 +68,7 @@ exports.godGet = [
         return res.sendStatus(400);
       }
 
-      const { id, name } = req.params;
+      const { id, name } = matchedData(req);
       const [god] = await db.getGod(id, name);
 
       if (!god) {
@@ -98,7 +98,7 @@ exports.domainGet = [
         return res.sendStatus(400);
       }
 
-      const { id, name } = req.params;
+      const { id, name } = matchedData(req);
       const [domain] = await db.getDomain(id, name);
 
       if (!domain) {
@@ -127,7 +127,7 @@ exports.symbolGet = [
         return res.sendStatus(400);
       }
 
-      const { id, name } = req.params;
+      const { id, name } = matchedData(req);
       const [symbol] = await db.getSymbol(id, name);
 
       if (!symbol) {
@@ -191,7 +191,8 @@ exports.pantheonPost = [
         return res.status(400).send("Error 400 Bad Request - invalid input");
       }
 
-      await db.createPantheon(req.body);
+      const data = matchedData(req, { includeOptionals: true });
+      await db.createPantheon(data);
       return res.redirect("/");
     } catch (err) {
       next(err);
@@ -214,7 +215,8 @@ exports.pantheonPut = [
         return res.status(400).send("Error 400 Bad Request - invalid input");
       }
 
-      await db.updatePantheon(req.params.id, req.body);
+      const data = matchedData(req, { includeOptionals: true });
+      await db.updatePantheon(req.params.id, data);
       return res.sendStatus(200);
     } catch (err) {
       next(err);
@@ -270,11 +272,13 @@ exports.godPost = [
   validateGodBody,
   async (req, res, next) => {
     try {
-      const { name, pantheon_id } = req.body;
-      if (!name || !pantheon_id) {
-        return res.status(400).send("Error 400 Bad Request - invalid input");
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.sendStatus(400);
       }
-      await db.createGod(req.body);
+
+      const data = matchedData(req, { includeOptionals: true });
+      await db.createGod(data);
       return res.redirect(req.headers.referer);
     } catch (err) {
       next(err);
@@ -282,19 +286,23 @@ exports.godPost = [
   },
 ];
 
-exports.godPut = async (req, res, next) => {
-  // insert validation here
-  try {
-    const { name, pantheon_id } = req.body;
-    if (!name || !pantheon_id) {
-      return res.status(400).send("Error 400 Bad Request - invalid input");
+exports.godPut = [
+  validateGodBody,
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.sendStatus(400);
+      }
+
+      const data = matchedData(req, { includeOptionals: true });
+      await db.updateGod(req.params.id, data);
+      return res.sendStatus(200);
+    } catch (err) {
+      next(err);
     }
-    await db.updateGod(req.params.id, req.body);
-    return res.sendStatus(200);
-  } catch (err) {
-    next(err);
-  }
-};
+  },
+];
 
 exports.godDelete = async (req, res, next) => {
   // consider adding confirmation or password check here
