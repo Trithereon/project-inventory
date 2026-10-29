@@ -1,9 +1,12 @@
 <form
-  id="editForm-<%= pantheon.name %>"
-  action="/pantheon/edit/<%= pantheon.id %>"
+  id="editForm-<%= pantheon.id %>"
+  action="/pantheon/edit/<%= pantheon.id %>?_method=PUT"
   method="POST"
   data-form="edit"
+  class="<%= visible ? 'visible' : '' %>"
 >
+  <%- include("./validationErrors") %>
+
   <div>
     <label for="name">Name: </label>
     <input

@@ -200,10 +200,32 @@ exports.pantheonPost = [
   },
 ];
 
+const validatePantheonBodyEdit = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ max: 100 })
+    .withMessage("Name is too long")
+    .matches(/^[\p{L}\p{N} '-]+$/u)
+    .withMessage("Name can only contain alphanumeric characters"),
+  body("origin")
+    .trim()
+    .notEmpty()
+    .withMessage("Origin is required")
+    .isLength({ max: 100 })
+    .withMessage("Origin max length 100 characters"),
+  body("description")
+    .trim()
+    .notEmpty()
+    .withMessage("Description is required")
+    .isLength({ max: 500 })
+    .withMessage("Description max length is 500 characters"),
+];
+
 exports.pantheonPut = [
-  validatePantheonBody,
+  validatePantheonBodyEdit,
   async (req, res, next) => {
-    // insert validation here
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -212,12 +234,17 @@ exports.pantheonPut = [
           req.method,
           req.originalUrl,
         );
-        return res.status(400).send("Error 400 Bad Request - invalid input");
+        return res.status(400).render("index", {
+          title: "Gods of Ancient Times",
+          errors: errors.array(),
+          pantheons: await db.getPantheons(),
+          visibleForm: `editForm-${req.params.id}`,
+        });
       }
 
       const data = matchedData(req, { includeOptionals: true });
       await db.updatePantheon(req.params.id, data);
-      return res.sendStatus(200);
+      return res.redirect("/");
     } catch (err) {
       next(err);
     }

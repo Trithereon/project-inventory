@@ -57,11 +57,16 @@
       <button
         class="edit-btn"
         data-action="toggleForm"
-        data-id="editForm-<%= pantheon.name %>"
+        data-id="editForm-<%= pantheon.id %>"
       >
         Edit pantheon
       </button>
-      <%- include ("./partials/editPantheonForm", {pantheon: pantheon}) %>
+
+      <% if (locals.visibleForm === `editForm-${pantheon.id}`) { %>
+      <%- include("./partials/editPantheonForm", {pantheon: pantheon, visible: true, errors: errors}) %>
+      <% } else { %>
+      <%- include("./partials/editPantheonForm", {pantheon: pantheon, visible: false, errors: false}) %>
+      <% } %>
     </div>
     <% }) %>
 
