@@ -96,7 +96,12 @@
       >
         Edit god
       </button>
-      <%- include ("./partials/editGodForm", {god: god}) %>
+
+      <% if (locals.visibleForm === `editForm-${god.id}`) { %>
+      <%- include("./partials/editGodForm", {god: god, visible: true, errors: errors}) %>
+      <% } else { %>
+      <%- include("./partials/editGodForm", {god: god, visible: false, errors: false}) %>
+      <% } %>
     </div>
     <% }) %>
 

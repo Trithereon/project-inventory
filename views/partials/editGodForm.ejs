@@ -1,9 +1,13 @@
 <form
   id="editForm-<%= god.id %>"
-  action="/god/edit/<%= god.id %>"
+  action="/god/edit/<%= god.id %>?_method=PUT"
   method="POST"
   data-form="edit"
+  class="<%= visible ? 'visible' : '' %>"
+  <%= errors ? "data-errored" : "" %>
 >
+<%- include("./validationErrors") %>
+
   <div>
     <label for="name">Name: </label>
     <input

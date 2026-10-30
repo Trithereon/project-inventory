@@ -1,28 +1,10 @@
-// Edit form handling, to convert a POST to a PUT.
-// Instead of adding event listeners to each form, just use one and delegate.
-// document.addEventListener("submit", async (e) => {
-//   const form = e.target;
-//   if (!form.matches('[data-form="edit"]')) {
-//     return;
-//   }
-
-//   e.preventDefault();
-
-//   const data = Object.fromEntries(new FormData(form));
-
-//   try {
-//     const res = await fetch(form.action, {
-//       method: "PUT",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(data),
-//     });
-//     if (res.ok) {
-//       return window.location.reload();
-//     }
-//   } catch (err) {
-//     console.error(err);
-//   }
-// });
+document.addEventListener("DOMContentLoaded", () => {
+  const erroredForm = document.querySelector("[data-errored]");
+  if (erroredForm) {
+    return erroredForm.scrollIntoView({ behavior: "instant", block: "center" });
+  }
+  return;
+});
 
 function toggleForm(id) {
   const form = document.getElementById(id);

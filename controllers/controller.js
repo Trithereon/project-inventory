@@ -317,14 +317,25 @@ exports.godPut = [
   validateGodBody,
   async (req, res, next) => {
     try {
+      const { pantheon_id } = req.body;
+      const [pantheon] = await db.getPantheonById(pantheon_id);
+      const { id } = req.params;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.sendStatus(400);
+        return res.status(400).render("pantheon", {
+          title: pantheon.name + " Pantheon",
+          gods: await db.getGods(pantheon_id),
+          pantheons: await db.getPantheons(),
+          errors: errors.array(),
+          visibleForm: `editForm-${id}`,
+        });
       }
 
       const data = matchedData(req, { includeOptionals: true });
-      await db.updateGod(req.params.id, data);
-      return res.sendStatus(200);
+      await db.updateGod(id, data);
+      return res
+        .status(200)
+        .redirect(`/pantheon/${pantheon_id}/${pantheon.name}/`);
     } catch (err) {
       next(err);
     }
