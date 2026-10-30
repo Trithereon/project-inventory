@@ -108,7 +108,7 @@ exports.domainGet = [
 
       return res.render("domain", {
         title: "Domain: " + name,
-        domain: name,
+        domain: domain,
         gods: await db.getDomainGods(id, name),
       });
     } catch (err) {
@@ -116,6 +116,17 @@ exports.domainGet = [
     }
   },
 ];
+
+exports.domainsGet = async (req, res, next) => {
+  try {
+    return res.render("domains", {
+      title: "Domains",
+      domains: await db.getDomains(),
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.symbolGet = [
   validateGetParams,
@@ -145,6 +156,17 @@ exports.symbolGet = [
     }
   },
 ];
+
+exports.symbolsGet = async (req, res, next) => {
+  try {
+    return res.render("symbols", {
+      title: "Symbols",
+      symbols: await db.getSymbols(),
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const validatePantheonBody = [
   body("name")
@@ -342,6 +364,14 @@ exports.godPut = [
   },
 ];
 
+exports.domainPost = async (req, res, next) => {};
+
+exports.domainPut = async (req, res, next) => {};
+
+exports.symbolPost = async (req, res, next) => {};
+
+exports.symbolPut = async (req, res, next) => {};
+
 exports.godDelete = async (req, res, next) => {
   // consider adding confirmation or password check here
   try {
@@ -361,3 +391,6 @@ exports.pantheonDelete = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.domainDelete = async (req, res, next) => {};
+exports.symbolDelete = async (req, res, next) => {};

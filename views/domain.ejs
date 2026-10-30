@@ -4,7 +4,30 @@
   <body>
     <%- include("./partials/header", {title:title}) %>
     <a href="/">Go back to homepage</a>
-    <div class="domain-block">
+    <a href="/domains">Explore domains</a>
+
+    <button
+      class="delete-btn"
+      data-action="deleteDomain"
+      data-id="<%= domain.id %>"
+    >
+      Delete domain
+    </button>
+    <button
+      class="edit-btn"
+      data-action="toggleForm"
+      data-id="editForm-<%= domain.id %>"
+    >
+      Edit domain
+    </button>
+
+    <% if (locals.visibleForm === `editForm-${domain.id}`) { %>
+    <%- include("./partials/editDomainForm", {domain: domain, visible: true, errors: errors}) %>
+    <% } else { %>
+    <%- include("./partials/editDomainForm", {domain: domain, visible: false, errors: false}) %>
+    <% } %>
+
+    <div class="domain-god-block">
       <% if (gods) { %>
       <h3>Gods reigning over this domain:</h3>
       <ul>

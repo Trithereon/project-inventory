@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("./partials/head", {title:title}) %>
+  <body>
+    <%- include("./partials/header", {title:title}) %>
+    <a href="/">Go back to homepage</a>
+
+    <button class="create-btn" data-id="symbolCreate" data-action="toggleForm">
+      Create new symbol
+    </button>
+    <form id="symbolCreate" action="/symbol/create" method="POST">
+      <div>
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" placeholder="e.g. Spear" />
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+
+    <% symbols.sort((a, b) =>
+    a.symbol.localeCompare(b.symbol)).forEach((symbol)=>{ %>
+    <div class="symbol-block">
+      <h3 class="name">
+        <a href="/symbol/<%= symbol.id %>/<%= symbol.symbol %>">
+          <%= symbol.symbol %>
+        </a>
+      </h3>
+    </div>
+    <% }) %>
+
+    <%- include("./partials/footer") %>
+  </body>
+</html>

@@ -40,10 +40,16 @@ a:hover {
   gap: 10px;
 }
 
+.domain-block,
+.symbol-block {
+}
+
 .create-btn,
 .delete-btn,
 .edit-btn {
   width: fit-content;
+  height: 21px;
+  align-items: center;
 }
 
 .create-btn {

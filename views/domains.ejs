@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("./partials/head", {title:title}) %>
+  <body>
+    <%- include("./partials/header", {title:title}) %>
+    <a href="/">Go back to homepage</a>
+    <button class="create-btn" data-id="domainCreate" data-action="toggleForm">
+      Create new domain
+    </button>
+    <form id="domainCreate" action="/domain/create" method="POST">
+      <div>
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" placeholder="e.g. Sun" />
+      </div>
+      <button type="submit">Create new domain</button>
+    </form>
+
+    <% domains.sort((a, b) => a.name.localeCompare(b.name)).forEach((domain)=>{
+    %>
+    <div class="domain-block">
+      <h3 class="name">
+        <a href="/domain/<%= domain.id %>/<%= domain.name %>">
+          <%= domain.name %>
+        </a>
+      </h3>
+    </div>
+    <% }) %>
+
+    <%- include("./partials/footer") %>
+  </body>
+</html>

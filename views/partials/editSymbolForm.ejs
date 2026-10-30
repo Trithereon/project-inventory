@@ -1,0 +1,23 @@
+<form
+  id="editForm-<%= symbol.id %>"
+  action="/symbol/edit/<%= symbol.id %>?_method=PUT"
+  method="POST"
+  data-form="edit"
+  class="<%= visible ? 'visible' : '' %>"
+  <%= errors ? "data-errored" : "" %>
+>
+<%- include("./validationErrors") %>
+
+  <div>
+    <label for="name">Name: </label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      placeholder="e.g. Spear"
+      value="<%= symbol.name %>"
+      required
+    />
+  </div>
+  <button type="submit">Submit Changes</button>
+</form>

@@ -85,6 +85,12 @@ async function getDomain(id, name) {
   return rows;
 }
 
+async function getDomains() {
+  const SQL = `SELECT * FROM domains`;
+  const { rows } = await pool.query(SQL);
+  return rows;
+}
+
 async function getSymbolGods(symbol_id) {
   const SQL = `SELECT g.id, g.name, p.name AS p_name FROM gods AS g
                 INNER JOIN god_symbols
@@ -102,6 +108,12 @@ async function getSymbol(id, name) {
   const SQL = `SELECT * FROM symbols
                 WHERE id = $1 AND symbol = $2`;
   const { rows } = await pool.query(SQL, [id, name]);
+  return rows;
+}
+
+async function getSymbols() {
+  const SQL = `SELECT * FROM symbols`;
+  const { rows } = await pool.query(SQL);
   return rows;
 }
 
@@ -176,7 +188,9 @@ module.exports = {
   getDomainGods,
   getSymbolGods,
   getDomain,
+  getDomains,
   getSymbol,
+  getSymbols,
   createPantheon,
   updatePantheon,
   updateGod,
