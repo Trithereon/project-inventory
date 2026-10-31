@@ -86,7 +86,7 @@ async function getDomain(id, name) {
 }
 
 async function getDomains() {
-  const SQL = `SELECT * FROM domains`;
+  const SQL = `SELECT * FROM domains ORDER BY name ASC`;
   const { rows } = await pool.query(SQL);
   return rows;
 }
@@ -112,7 +112,7 @@ async function getSymbol(id, name) {
 }
 
 async function getSymbols() {
-  const SQL = `SELECT * FROM symbols`;
+  const SQL = `SELECT * FROM symbols ORDER BY symbol ASC`;
   const { rows } = await pool.query(SQL);
   return rows;
 }
@@ -128,9 +128,16 @@ async function createPantheon(pantheon) {
 }
 
 async function createGod(god) {
-  const SQL = `INSERT INTO gods(pantheon_id, name,gender,description, status, img_url)
-                VALUES($1, $2, $3, $4, $5, $6)`;
-  return await pool.query(SQL, [
+  // Normalize domains and symbols to arrays.
+  // This is necessary because select multiple returns an array,
+  // but a single value returns a primitive.
+  const domains = [].concat(god.domains || []);
+  const symbols = [].concat(god.symbols || []);
+
+  const godSQL = `INSERT INTO gods(pantheon_id, name,gender,description, status, img_url)
+                    VALUES($1, $2, $3, $4, $5, $6)
+                      RETURNING id`;
+  const { rows } = await pool.query(godSQL, [
     god.pantheon_id,
     god.name,
     god.gender || null,
@@ -138,6 +145,19 @@ async function createGod(god) {
     god.status || null,
     god.img_url || null,
   ]);
+
+  // God id is created by postgres in the previous query, so it can be used here.
+  const godId = rows[0].id;
+
+  // UNNEST is used like a forEach on the domains/symbols arrays
+  const domainSQL = `INSERT INTO god_domains(god_id, domain_id)
+  SELECT $1, UNNEST($2::int[])`;
+  const symbolSQL = `INSERT INTO god_symbols(god_id, symbol_id)
+  SELECT $1, UNNEST($2::int[])`;
+
+  await pool.query(domainSQL, [godId, domains]);
+  await pool.query(symbolSQL, [godId, symbols]);
+  return;
 }
 
 async function deleteGod(id) {

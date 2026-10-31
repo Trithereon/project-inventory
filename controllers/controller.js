@@ -51,6 +51,8 @@ exports.pantheonGet = [
         title: name + " Pantheon",
         gods: await db.getGods(id),
         pantheons: await db.getPantheons(),
+        domains: await db.getDomains(),
+        symbols: await db.getSymbols(),
       });
     } catch (err) {
       next(err);
@@ -321,6 +323,16 @@ const validateGodBody = [
       max_allowed_length: 2048,
     })
     .withMessage("Image URL must be valid"),
+  body("domains")
+    .optional({ values: "falsy" })
+    .isInt()
+    .withMessage("Domain id must be an integer.")
+    .toInt(),
+  body("symbols")
+    .optional({ values: "falsy" })
+    .isInt()
+    .withMessage("Symbol id must be an integer.")
+    .toInt(),
 ];
 
 exports.godPost = [

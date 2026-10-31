@@ -15,8 +15,7 @@
       <button type="submit">Submit</button>
     </form>
 
-    <% symbols.sort((a, b) =>
-    a.symbol.localeCompare(b.symbol)).forEach((symbol)=>{ %>
+    <% symbols.forEach((symbol)=>{ %>
     <div class="symbol-block">
       <h3 class="name">
         <a href="/symbol/<%= symbol.id %>/<%= symbol.symbol %>">

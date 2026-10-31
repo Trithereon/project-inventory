@@ -65,5 +65,21 @@
       value="<%= god.img_url %>"
     />
   </div>
+    <div>
+    <label for="domains">Domain(s): </label>
+    <select name="domains" id="domains" multiple size="6">
+      <% domains.forEach((d) => { %>
+      <option value="<%= d.id %>"><%= d.name %></option>
+      <% }) %>
+    </select>
+  </div>
+  <div>
+    <label for="symbols">Symbol(s): </label>
+    <select name="symbols" id="symbols" multiple size="6">
+      <% symbols.forEach((s) => { %>
+      <option value="<%= s.id %>"><%= s.symbol %></option>
+      <% }) %>
+    </select>
+  </div>
   <button type="submit">Submit Changes</button>
 </form>

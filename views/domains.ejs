@@ -15,8 +15,7 @@
       <button type="submit">Create new domain</button>
     </form>
 
-    <% domains.sort((a, b) => a.name.localeCompare(b.name)).forEach((domain)=>{
-    %>
+    <% domains.forEach((domain)=>{ %>
     <div class="domain-block">
       <h3 class="name">
         <a href="/domain/<%= domain.id %>/<%= domain.name %>">

@@ -9,62 +9,12 @@
     <button class="create-btn" data-action="toggleForm" data-id="createGodForm">
       Create new god
     </button>
-    <form id="createGodForm" action="/god/create" method="POST">
-      <div>
-        <label for="name">Name: </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="e.g. Apollo"
-          required
-        />
-      </div>
-      <div>
-        <label for="pantheon_id">Pantheon: </label>
-        <select id="pantheon_id" name="pantheon_id" required>
-          <option value="">-</option>
-          <% pantheons.forEach((pantheon) => { %>
-          <option value="<%= pantheon.id %>"><%= pantheon.name %></option>
-          <% }) %>
-        </select>
-      </div>
-      <div>
-        <label for="gender">Gender: </label>
-        <select id="gender" name="gender">
-          <option value="">-</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Both">Both</option>
-        </select>
-      </div>
-      <div>
-        <label for="status">Status: </label>
-        <select id="status" name="status">
-          <option value="">-</option>
-          <option value="Major">Major</option>
-          <option value="Minor">Minor</option>
-        </select>
-      </div>
-      <div>
-        <label for="description">Description: </label>
-        <textarea
-          id="description"
-          name="description"
-          placeholder="A brief summary"
-        ></textarea>
-      </div>
-      <div>
-        <label for="img_url">Image URL: </label>
-        <input
-          name="img_url"
-          id="img_url"
-          type="url"
-          placeholder="Enter a valid URL"
-        />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+
+    <% if (locals.visibleForm === "createGodForm") { %>
+    <%- include("./partials/createGodForm", {domains: domains, data: data, visible: true, errors: errors}) %>
+    <% } else { %>
+    <%- include("./partials/createGodForm", {domains: domains, data: false, visible: false, errors: false}) %>
+    <% } %>
 
     <% gods.forEach((god) => { %>
     <div class="god-block">
@@ -98,9 +48,9 @@
       </button>
 
       <% if (locals.visibleForm === `editForm-${god.id}`) { %>
-      <%- include("./partials/editGodForm", {god: god, visible: true, errors: errors}) %>
+      <%- include("./partials/editGodForm", {domains: domains, god: god, visible: true, errors: errors}) %>
       <% } else { %>
-      <%- include("./partials/editGodForm", {god: god, visible: false, errors: false}) %>
+      <%- include("./partials/editGodForm", {domains: domains, god: god, visible: false, errors: false}) %>
       <% } %>
     </div>
     <% }) %>
