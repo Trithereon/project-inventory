@@ -178,8 +178,8 @@ const validatePantheonBody = [
     .matches(/^[\p{L}\p{N} '-]+$/u)
     .withMessage("Name can only contain alphanumeric characters")
     .bail() // Aborts further validation if a failure has occurred.
-    .custom(async (req) => {
-      const [pantheon] = await db.getPantheonByName(req.body.name);
+    .custom(async (name) => {
+      const [pantheon] = await db.getPantheonByName(name);
       if (pantheon) {
         throw new Error("Pantheon name already exists");
       }
@@ -210,7 +210,13 @@ exports.pantheonPost = [
           req.method,
           req.originalUrl,
         );
-        return res.status(400).send("Error 400 Bad Request - invalid input");
+        return res.status(400).render("index", {
+          title: "Gods of Ancient Times",
+          errors: errors.array(),
+          pantheons: await db.getPantheons(),
+          visibleForm: "pantheonCreate",
+          data: req.body,
+        });
       }
 
       const data = matchedData(req, { includeOptionals: true });
