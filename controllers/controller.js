@@ -341,7 +341,17 @@ exports.godPost = [
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.sendStatus(400);
+        const [pantheon] = await db.getPantheonById(req.body.pantheon_id);
+        return res.status(400).render("pantheon", {
+          title: pantheon.name + " Pantheon",
+          gods: await db.getGods(req.body.pantheon_id),
+          pantheons: await db.getPantheons(),
+          domains: await db.getDomains(),
+          symbols: await db.getSymbols(),
+          errors: errors.array(),
+          visibleForm: "createGodForm",
+          data: req.body,
+        });
       }
 
       const data = matchedData(req, { includeOptionals: true });

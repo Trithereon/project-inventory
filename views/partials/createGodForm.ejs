@@ -5,6 +5,8 @@
   class="<%= visible ? 'visible' : ''%>"
   <%= errors ? "data-errored" : "" %>
 >
+  <%- include("./validationErrors") %>
+
   <div>
     <label for="name">Name: </label>
     <input
@@ -13,6 +15,7 @@
       name="name"
       placeholder="e.g. Apollo"
       required
+      value="<%= locals.data ? data.name : '' %>"
     />
   </div>
   <div>
@@ -47,7 +50,7 @@
       id="description"
       name="description"
       placeholder="A brief summary"
-    ></textarea>
+    ><%= locals.data ? data.description : '' %></textarea>
   </div>
   <div>
     <label for="img_url">Image URL: </label>
