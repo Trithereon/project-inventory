@@ -15,7 +15,7 @@
       id="name"
       name="name"
       placeholder="e.g. Sun"
-      value="<%= domain.name %>"
+      value="<%= locals.data ? locals.data.name : domain.name %>"
       required
     />
   </div>

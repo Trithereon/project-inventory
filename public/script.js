@@ -18,6 +18,7 @@ async function handleDeleteGod(id) {
     if (!res.ok) {
       throw new Error(`Response status: ${res.status}`);
     }
+    window.location.href = "/";
   } catch (error) {
     console.error(error.message);
   }
@@ -36,7 +37,7 @@ async function handleDeletePantheon(id) {
 }
 
 const actionHandlers = {
-  deleteGod: { fn: handleDeleteGod, reload: true },
+  deleteGod: { fn: handleDeleteGod, reload: false },
   deletePantheon: { fn: handleDeletePantheon, reload: true },
   toggleForm: { fn: toggleForm, reload: false },
 };

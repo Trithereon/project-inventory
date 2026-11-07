@@ -114,7 +114,7 @@ exports.domainGet = [
       return res.render("domain", {
         title: "Domain: " + name,
         domain: domain,
-        gods: await db.getDomainGods(id, name),
+        gods: await db.getDomainGods(id),
       });
     } catch (err) {
       next(err);
@@ -153,7 +153,7 @@ exports.symbolGet = [
 
       return res.render("symbol", {
         title: "Symbol: " + name,
-        symbol: name,
+        symbol: symbol,
         gods: await db.getSymbolGods(id),
       });
     } catch (err) {
@@ -386,9 +386,7 @@ exports.godPut = [
 
       const data = matchedData(req, { includeOptionals: true });
       await db.updateGod(id, data);
-      return res
-        .status(200)
-        .redirect(`/pantheon/${pantheon_id}/${pantheon.name}/`);
+      return res.redirect(`/pantheon/${pantheon_id}/${pantheon.name}/`);
     } catch (err) {
       next(err);
     }
@@ -426,7 +424,44 @@ exports.domainPost = [
   },
 ];
 
-exports.domainPut = async (req, res, next) => {};
+exports.domainPut = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ max: 100 })
+    .withMessage("Name is too long")
+    .matches(/^[\p{L}\p{N} '-]+$/u)
+    .withMessage("Name can only contain alphanumeric characters"),
+  param("id")
+    .notEmpty()
+    .withMessage("Domain id cannot be empty")
+    .isInt()
+    .withMessage("Domain id must be an integer")
+    .toInt(),
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const [domain] = await db.getDomainById(req.params.id);
+        return res.status(400).render("domain", {
+          title: "Domain: " + domain.name,
+          domain: domain,
+          gods: await db.getDomainGods(req.params.id),
+          errors: errors.array(),
+          visibleForm: `editForm-${req.params.id}`,
+          data: req.body,
+        });
+      }
+
+      const { id, name } = matchedData(req);
+      await db.updateDomain(id, name);
+      return res.redirect("/domains");
+    } catch (err) {
+      next(err);
+    }
+  },
+];
 
 exports.symbolPost = [
   body("symbol")
@@ -459,7 +494,44 @@ exports.symbolPost = [
   },
 ];
 
-exports.symbolPut = async (req, res, next) => {};
+exports.symbolPut = [
+  body("symbol")
+    .trim()
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ max: 100 })
+    .withMessage("Name is too long")
+    .matches(/^[\p{L}\p{N} '-]+$/u)
+    .withMessage("Name can only contain alphanumeric characters"),
+  param("id")
+    .notEmpty()
+    .withMessage("Symbol id cannot be empty")
+    .isInt()
+    .withMessage("Symbol id must be an integer")
+    .toInt(),
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const [symbol] = await db.getSymbolById(req.params.id);
+        return res.status(400).render("symbol", {
+          title: "Symbol: " + symbol.symbol,
+          symbol: symbol,
+          gods: await db.getSymbolGods(req.params.id),
+          errors: errors.array(),
+          visibleForm: `editForm-${req.params.id}`,
+          data: req.body,
+        });
+      }
+
+      const { id, symbol } = matchedData(req);
+      await db.updateSymbol(id, symbol);
+      return res.redirect("/symbols");
+    } catch (err) {
+      next(err);
+    }
+  },
+];
 
 exports.godDelete = async (req, res, next) => {
   // consider adding confirmation or password check here

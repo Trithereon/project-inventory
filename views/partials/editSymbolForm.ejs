@@ -12,10 +12,10 @@
     <label for="name">Name: </label>
     <input
       type="text"
-      id="name"
-      name="name"
+      id="symbol"
+      name="symbol"
       placeholder="e.g. Spear"
-      value="<%= symbol.symbol %>"
+      value="<%= locals.data ? locals.data.symbol : symbol.symbol %>"
       required
     />
   </div>
