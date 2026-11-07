@@ -7,13 +7,12 @@
     <button class="create-btn" data-id="symbolCreate" data-action="toggleForm">
       Create new symbol
     </button>
-    <form id="symbolCreate" action="/symbol/create" method="POST">
-      <div>
-        <label for="name">Name: </label>
-        <input type="text" id="name" name="name" placeholder="e.g. Spear" />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+
+    <% if (locals.visibleForm === "symbolCreate") { %>
+    <%- include("./partials/createSymbolForm", {data: data, visible: true, errors: errors}) %>
+    <% } else { %>
+    <%- include("./partials/createSymbolForm", {data: false, visible: false, errors: false}) %>
+    <% } %>
 
     <% symbols.forEach((symbol)=>{ %>
     <div class="symbol-block">

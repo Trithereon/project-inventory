@@ -81,8 +81,11 @@ exports.godGet = [
       return res.render("god", {
         title: req.params.name,
         god: god,
-        symbols: await db.getGodSymbols(id),
-        domains: await db.getGodDomains(id),
+        godSymbols: await db.getGodSymbols(id),
+        godDomains: await db.getGodDomains(id),
+        pantheons: await db.getPantheons(),
+        domains: await db.getDomains(),
+        symbols: await db.getSymbols(),
       });
     } catch (err) {
       next(err);
@@ -392,11 +395,69 @@ exports.godPut = [
   },
 ];
 
-exports.domainPost = async (req, res, next) => {};
+exports.domainPost = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ max: 100 })
+    .withMessage("Name is too long")
+    .matches(/^[\p{L}\p{N} '-]+$/u)
+    .withMessage("Name can only contain alphanumeric characters"),
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).render("domains", {
+          title: "Domains",
+          domains: await db.getDomains(),
+          errors: errors.array(),
+          visibleForm: "domainCreate",
+          data: req.body,
+        });
+      }
+
+      const data = matchedData(req);
+      await db.createDomain(data.name);
+      return res.redirect("/domains");
+    } catch (err) {
+      next(err);
+    }
+  },
+];
 
 exports.domainPut = async (req, res, next) => {};
 
-exports.symbolPost = async (req, res, next) => {};
+exports.symbolPost = [
+  body("symbol")
+    .trim()
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ max: 100 })
+    .withMessage("Name is too long")
+    .matches(/^[\p{L}\p{N} '-]+$/u)
+    .withMessage("Name can only contain alphanumeric characters"),
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).render("symbols", {
+          title: "Symbols",
+          symbols: await db.getSymbols(),
+          errors: errors.array(),
+          visibleForm: "symbolCreate",
+          data: req.body,
+        });
+      }
+
+      const data = matchedData(req);
+      await db.createSymbol(data.symbol);
+      return res.redirect("/symbols");
+    } catch (err) {
+      next(err);
+    }
+  },
+];
 
 exports.symbolPut = async (req, res, next) => {};
 

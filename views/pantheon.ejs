@@ -32,26 +32,6 @@
       <%= god.name %>"
       />
       <% } %>
-      <button
-        class="delete-btn"
-        data-action="deleteGod"
-        data-id="<%= god.id %>"
-      >
-        Delete god
-      </button>
-      <button
-        class="edit-btn"
-        data-action="toggleForm"
-        data-id="editForm-<%= god.id %>"
-      >
-        Edit god
-      </button>
-
-      <% if (locals.visibleForm === `editForm-${god.id}`) { %>
-      <%- include("./partials/editGodForm", {domains: domains, god: god, visible: true, errors: errors}) %>
-      <% } else { %>
-      <%- include("./partials/editGodForm", {domains: domains, god: god, visible: false, errors: false}) %>
-      <% } %>
     </div>
     <% }) %>
 

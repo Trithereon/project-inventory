@@ -7,13 +7,12 @@
     <button class="create-btn" data-id="domainCreate" data-action="toggleForm">
       Create new domain
     </button>
-    <form id="domainCreate" action="/domain/create" method="POST">
-      <div>
-        <label for="name">Name: </label>
-        <input type="text" id="name" name="name" placeholder="e.g. Sun" />
-      </div>
-      <button type="submit">Create new domain</button>
-    </form>
+
+    <% if (locals.visibleForm === "domainCreate") { %>
+    <%- include("./partials/createDomainForm", {data: data, visible: true, errors: errors}) %>
+    <% } else { %>
+    <%- include("./partials/createDomainForm", {data: false, visible: false, errors: false}) %>
+    <% } %>
 
     <% domains.forEach((domain)=>{ %>
     <div class="domain-block">

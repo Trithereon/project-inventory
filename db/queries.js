@@ -29,7 +29,7 @@ async function getPantheonByName(name) {
 
 async function getGods(pantheonId) {
   const SQL = `SELECT * FROM gods
-                WHERE pantheon_id = $1 ORDER BY id ASC`;
+                WHERE pantheon_id = $1 ORDER BY LOWER(name) ASC`;
   const { rows } = await pool.query(SQL, [pantheonId]);
   return rows;
 }
@@ -86,7 +86,7 @@ async function getDomain(id, name) {
 }
 
 async function getDomains() {
-  const SQL = `SELECT * FROM domains ORDER BY name ASC`;
+  const SQL = `SELECT * FROM domains ORDER BY LOWER(name) ASC`;
   const { rows } = await pool.query(SQL);
   return rows;
 }
@@ -112,7 +112,7 @@ async function getSymbol(id, name) {
 }
 
 async function getSymbols() {
-  const SQL = `SELECT * FROM symbols ORDER BY symbol ASC`;
+  const SQL = `SELECT * FROM symbols ORDER BY LOWER(symbol) ASC`;
   const { rows } = await pool.query(SQL);
   return rows;
 }
@@ -183,10 +183,13 @@ async function updatePantheon(id, pantheon) {
 }
 
 async function updateGod(id, god) {
-  const SQL = `UPDATE gods
+  const domains = [].concat(god.domains || []);
+  const symbols = [].concat(god.symbols || []);
+
+  const godSQL = `UPDATE gods
                 SET pantheon_id = $1, name = $2, gender = $3, description = $4, status = $5, img_url = $6
                   WHERE id = $7`;
-  return await pool.query(SQL, [
+  await pool.query(godSQL, [
     god.pantheon_id,
     god.name,
     god.gender,
@@ -195,6 +198,33 @@ async function updateGod(id, god) {
     god.img_url,
     id,
   ]);
+
+  const domainDelSQL = `DELETE FROM god_domains
+                          WHERE god_id = $1`;
+  const symbolDelSQL = `DELETE FROM god_symbols
+                          WHERE god_id = $1`;
+  const domainAddSQL = `INSERT INTO god_domains(god_id, domain_id)
+                          SELECT $1, UNNEST($2::int[])`;
+  const symbolAddSQL = `INSERT INTO god_symbols(god_id, symbol_id)
+                          SELECT $1, UNNEST($2::int[])`;
+
+  await pool.query(domainDelSQL, [id]);
+  await pool.query(domainAddSQL, [id, domains]);
+  await pool.query(symbolDelSQL, [id]);
+  await pool.query(symbolAddSQL, [id, symbols]);
+  return;
+}
+
+async function createDomain(name) {
+  const SQL = `INSERT INTO domains(name)
+                VALUES($1)`;
+  return await pool.query(SQL, [name]);
+}
+
+async function createSymbol(symbol) {
+  const SQL = `INSERT INTO symbols(symbol)
+                VALUES($1)`;
+  return await pool.query(SQL, [symbol]);
 }
 
 module.exports = {
@@ -218,4 +248,6 @@ module.exports = {
   createGod,
   deleteGod,
   deletePantheon,
+  createDomain,
+  createSymbol,
 };

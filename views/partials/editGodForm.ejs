@@ -69,7 +69,7 @@
     <label for="domains">Domain(s): </label>
     <select name="domains" id="domains" multiple size="6">
       <% domains.forEach((d) => { %>
-      <option value="<%= d.id %>"><%= d.name %></option>
+      <option value="<%= d.id %>" <%= godDomains.some(dom => dom.id === d.id) ? 'selected' : '' %>><%= d.name %></option>
       <% }) %>
     </select>
   </div>
@@ -77,7 +77,7 @@
     <label for="symbols">Symbol(s): </label>
     <select name="symbols" id="symbols" multiple size="6">
       <% symbols.forEach((s) => { %>
-      <option value="<%= s.id %>"><%= s.symbol %></option>
+      <option value="<%= s.id %>" <%= godSymbols.some(sym => sym.id === s.id) ? 'selected' : '' %>><%= s.symbol %></option>
       <% }) %>
     </select>
   </div>

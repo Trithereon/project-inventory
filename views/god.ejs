@@ -16,10 +16,10 @@
       <% if (god.img_url) { %>
       <img src="<%= god.img_url %>" alt="Image of <%= god.name %>" />
       <% } %>
-      <% if (symbols) { %>
+      <% if (godSymbols) { %>
       <h3>Symbols:</h3>
       <ul>
-        <% symbols.forEach((symbol) => { %>
+        <% godSymbols.forEach((symbol) => { %>
         <li>
           <a class="symbol" href="/symbol/<%= symbol.id %>/<%= symbol.symbol %>"
             ><%= symbol.symbol %></a
@@ -28,10 +28,10 @@
         <% }) %>
       </ul>
       <% } %>
-      <% if (domains) { %>
+      <% if (godDomains) { %>
       <h3>Domains:</h3>
       <ul>
-        <% domains.forEach((domain) => { %>
+        <% godDomains.forEach((domain) => { %>
         <li>
           <a class="domain" href="/domain/<%= domain.id %>/<%= domain.name %>">
             <%= domain.name %>
@@ -39,6 +39,26 @@
         </li>
         <% }) %>
       </ul>
+      <% } %>
+      <button
+        class="delete-btn"
+        data-action="deleteGod"
+        data-id="<%= god.id %>"
+      >
+        Delete god
+      </button>
+      <button
+        class="edit-btn"
+        data-action="toggleForm"
+        data-id="editForm-<%= god.id %>"
+      >
+        Edit god
+      </button>
+
+      <% if (locals.visibleForm === `editForm-${god.id}`) { %>
+      <%- include("./partials/editGodForm", {domains: domains, god: god, visible: true, errors: errors}) %>
+      <% } else { %>
+      <%- include("./partials/editGodForm", {domains: domains, god: god, visible: false, errors: false}) %>
       <% } %>
     </div>
 
