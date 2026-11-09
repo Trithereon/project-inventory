@@ -2,9 +2,15 @@
   font-family: "North Eternal";
   src: url("./assets/fonts/NorthEternal.woff2") format("woff2");
 }
+@font-face {
+  font-family: "Roboto";
+  src:
+    local("Roboto"),
+    url("./assets/fonts/Roboto-Regular.woff2") format("woff2");
+}
 
 :root {
-  font-family: Roboto, system-ui, sans-serif;
+  font-family: "Roboto", system-ui, sans-serif;
   font-display: block;
 }
 
