@@ -6,7 +6,7 @@
     <a href="/pantheon/<%= god.pantheon_id %>/<%= god.p_name %>">
       Go back to <%= god.p_name %> pantheon
     </a>
-    <div class="god-block">
+    <div class="god-block solo">
       <small>
         <%= god.gender || "Gender unknown" %>,
         <%= god.status || "Status unknown" %>
@@ -17,7 +17,7 @@
       <img src="<%= god.img_url %>" alt="Image of <%= god.name %>" />
       <% } %>
       <% if (godSymbols) { %>
-      <h3>Symbols:</h3>
+      <h2>Symbols:</h2>
       <ul>
         <% godSymbols.forEach((symbol) => { %>
         <li>
@@ -29,7 +29,7 @@
       </ul>
       <% } %>
       <% if (godDomains) { %>
-      <h3>Domains:</h3>
+      <h2>Domains:</h2>
       <ul>
         <% godDomains.forEach((domain) => { %>
         <li>

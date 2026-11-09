@@ -6,11 +6,11 @@
   <%= errors ? "data-errored" : "" %>
 >
   <%- include("./validationErrors") %>
-  <div>
+  <div class="input-line">
     <label for="name">Name: </label>
     <input type="text" id="name" name="name" placeholder="e.g. Roman" value="<%= locals.data ? data.name : '' %>" />
   </div>
-  <div>
+  <div class="input-line">
     <label for="origin">Region of origin: </label>
     <input
       type="text"
@@ -20,7 +20,7 @@
       value="<%= locals.data ? data.origin : '' %>"
     />
   </div>
-  <div>
+  <div class="input-line">
     <label for="description">Description: </label>
     <textarea
       id="description"

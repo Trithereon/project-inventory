@@ -8,7 +8,7 @@
 >
 <%- include("./validationErrors") %>
 
-  <div>
+  <div class="input-line">
     <label for="name">Name: </label>
     <input
       type="text"
@@ -19,7 +19,7 @@
       required
     />
   </div>
-  <div>
+  <div class="input-line">
     <label for="pantheon_id">Pantheon: </label>
     <select id="pantheon_id" name="pantheon_id" required>
       <option value="">-</option>
@@ -30,7 +30,7 @@
       <% }) %>
     </select>
   </div>
-  <div>
+  <div class="input-line">
     <label for="gender">Gender: </label>
     <select id="gender" name="gender">
       <option value="">-</option>
@@ -39,7 +39,7 @@
       <option value="Both" <%= god.gender === "Both" ? "selected" : "" %>>Both</option>
     </select>
   </div>
-  <div>
+  <div class="input-line">
     <label for="status">Status: </label>
     <select id="status" name="status">
       <option value="">-</option>
@@ -47,7 +47,7 @@
       <option value="Minor" <%= god.status === "Minor" ? "selected" : "" %>>Minor</option>
     </select>
   </div>
-  <div>
+  <div class="input-line">
     <label for="description">Description: </label>
     <textarea
       id="description"
@@ -55,7 +55,7 @@
       placeholder="A brief summary"
     ><%= god.description %></textarea>
   </div>
-  <div>
+  <div class="input-line">
     <label for="img_url">Image URL: </label>
     <input
       name="img_url"
@@ -65,7 +65,7 @@
       value="<%= god.img_url %>"
     />
   </div>
-    <div>
+    <div class="input-line">
     <label for="domains">Domain(s): </label>
     <select name="domains" id="domains" multiple size="6">
       <% domains.forEach((d) => { %>
@@ -73,7 +73,7 @@
       <% }) %>
     </select>
   </div>
-  <div>
+  <div class="input-line">
     <label for="symbols">Symbol(s): </label>
     <select name="symbols" id="symbols" multiple size="6">
       <% symbols.forEach((s) => { %>
