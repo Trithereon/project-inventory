@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS pantheons (
 
 CREATE TABLE IF NOT EXISTS gods (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  pantheon_id INTEGER NOT NULL,
+  pantheon_id INTEGER NOT NULL REFERENCES pantheons (id) ON DELETE CASCADE,
   name VARCHAR(100) NOT NULL,
   gender VARCHAR(13),
   description VARCHAR(500),
@@ -22,17 +22,20 @@ CREATE TABLE IF NOT EXISTS domains (
 
 CREATE TABLE IF NOT EXISTS symbols (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  symbol VARCHAR(500) NOT NULL
+  symbol VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS god_symbols (
-  god_id INTEGER NOT NULL,
-  symbol_id INTEGER NOT NULL
+  -- This primary key prevents duplicate combinations
+  PRIMARY KEY (god_id, symbol_id),
+  god_id INTEGER NOT NULL REFERENCES gods (id) ON DELETE CASCADE,
+  symbol_id INTEGER NOT NULL REFERENCES symbols (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS god_domains (
-  god_id INTEGER NOT NULL,
-  domain_id INTEGER NOT NULL
+  PRIMARY KEY (god_id, domain_id),
+  god_id INTEGER NOT NULL REFERENCES gods (id) ON DELETE CASCADE,
+  domain_id INTEGER NOT NULL REFERENCES domains (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS god_counterparts (

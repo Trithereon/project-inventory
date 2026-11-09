@@ -176,12 +176,14 @@ async function createGod(god) {
 
 async function deleteGod(id) {
   const SQL = `DELETE FROM gods WHERE id = $1`;
-  return await pool.query(SQL, [id]);
+  await pool.query(SQL, [id]);
+  return;
 }
 
 async function deletePantheon(id) {
   const SQL = `DELETE FROM pantheons WHERE id = $1`;
-  return await pool.query(SQL, [id]);
+  await pool.query(SQL, [id]);
+  return;
 }
 
 async function updatePantheon(id, pantheon) {
@@ -255,11 +257,24 @@ async function updateSymbol(id, symbol) {
   return await pool.query(SQL, [id, symbol]);
 }
 
+async function deleteDomain(id) {
+  const SQL = `DELETE FROM domains
+              WHERE id = $1`;
+  return await pool.query(SQL, [id]);
+}
+
+async function deleteSymbol(id) {
+  const SQL = `DELETE FROM symbols
+              WHERE id = $1`;
+  return await pool.query(SQL, [id]);
+}
+
 module.exports = {
   getPantheons,
   getPantheon,
   getPantheonByName,
   getPantheonById,
+  getGod,
   getGods,
   getGodSymbols,
   getGodDomains,
@@ -272,14 +287,15 @@ module.exports = {
   getSymbolById,
   getSymbols,
   createPantheon,
+  createGod,
+  createDomain,
+  createSymbol,
   updatePantheon,
   updateGod,
   updateDomain,
   updateSymbol,
-  getGod,
-  createGod,
-  deleteGod,
   deletePantheon,
-  createDomain,
-  createSymbol,
+  deleteGod,
+  deleteDomain,
+  deleteSymbol,
 };

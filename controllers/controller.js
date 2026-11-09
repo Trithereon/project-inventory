@@ -553,5 +553,22 @@ exports.pantheonDelete = async (req, res, next) => {
   }
 };
 
-exports.domainDelete = async (req, res, next) => {};
-exports.symbolDelete = async (req, res, next) => {};
+exports.domainDelete = async (req, res, next) => {
+  // consider adding confirmation or password check here
+  try {
+    await db.deleteDomain(req.params.id);
+    return res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.symbolDelete = async (req, res, next) => {
+  // consider adding confirmation or password check here
+  try {
+    await db.deleteSymbol(req.params.id);
+    return res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+};
